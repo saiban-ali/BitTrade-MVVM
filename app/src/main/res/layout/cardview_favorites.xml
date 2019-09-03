@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#fff">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorImageBackground"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_remove_from_favorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:padding="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_cancel_black_24dp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_product_image_cardview_favorites"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:scaleType="centerCrop"/>
+
+                <ProgressBar
+                    android:id="@+id/cardview_item_progress_bar"
+                    android:layout_width="@dimen/img_progress_width"
+                    android:layout_height="@dimen/img_progress_height"
+                    android:layout_gravity="center"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/colorPrimary" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/txt_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/calibri_regular"
+                android:gravity="top|start"
+                android:text="Leather Wristwatch"
+                android:textColor="@color/colorText"
+                android:textSize="16sp"
+                android:maxLines="1"
+                app:autoSizeMaxTextSize="16sp"
+                app:autoSizeMinTextSize="14sp" />
+
+            <TextView
+                android:id="@+id/txt_brand_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/calibri_regular"
+                android:gravity="top|start"
+                android:text="Tag Heuer"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextLight"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeMinTextSize="12sp" />
+
+            <TextView
+                android:id="@+id/txt_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="5dp"
+                android:fontFamily="@font/calibri_regular"
+                android:gravity="bottom|start"
+                android:text="$400"
+                android:textColor="@color/colorPrice"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

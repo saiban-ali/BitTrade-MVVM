@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">BitTrade (Fragments + MVVM)</string>
+    <string name="explore">Explore</string>
+    <string name="cart">Cart</string>
+    <string name="sell">Sell</string>
+    <string name="favorites">Favorites</string>
+    <string name="profile">Profile</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="explorefragment">ExploreFragment</string>
+    <string name="cartfragment">CartFragment</string>
+    <string name="favoritesfragment">FavoritesFragment</string>
+    <string name="profilefragment">ProfileFragment</string>
+    <string name="sellfragment">SellFragment</string>
+    <string name="actionbar">ActionBar</string>
+
+    <string name="register_now"><u>Register Now</u></string>
+    <string name="login_now"><u>Login Now</u></string>
+    <string name="lorem">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="exit">Exit</string>
+    <string name="search">Search</string>
+    <string name="bit">Bit</string>
+    <string name="trade">Trade</string>
+    <string name="no_image">No Image</string>
+    <string name="see_all">See All</string>
+    <string name="categories">Categories</string>
+    <string name="gadgets">Gadgets</string>
+    <string name="gaming">Gaming</string>
+    <string name="devices">Devices</string>
+    <string name="women">Women</string>
+    <string name="men">Men</string>
+    <string name="network_error">Network Error</string>
+    <string name="retry">Retry</string>
+    <string name="checkout">CHECKOUT</string>
+    <string name="total">TOTAL</string>
+    <string name="_4500">$4500</string>
+    <string name="add_to_cart">ADD TO CART</string>
+</resources>
