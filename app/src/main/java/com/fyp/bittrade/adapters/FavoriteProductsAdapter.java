@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,9 +20,11 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.models.Product;
+import com.fyp.bittrade.utils.ProductsDiffUtill;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProductsAdapter.FavoritesRecyclerViewHolder> {
@@ -30,8 +33,8 @@ public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProduc
     private Context context;
     private OnItemClickListener onItemClickListener;
 
-    public FavoriteProductsAdapter(List<Product> favoritesList, Context context) {
-        this.favoritesList = favoritesList;
+    public FavoriteProductsAdapter(Context context) {
+        this.favoritesList = new ArrayList<>();
         this.context = context;
     }
 
@@ -75,7 +78,7 @@ public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProduc
         }
         favoritesRecyclerViewHolder.product_title.setText(favoritesList.get(i).getTitle());
         favoritesRecyclerViewHolder.product_brand.setText("Brand");
-        favoritesRecyclerViewHolder.product_price.setText(String.format("$%s", Double.toString(favoritesList.get(i).getPrice())));
+        favoritesRecyclerViewHolder.product_price.setText(String.format("$%.2f", favoritesList.get(i).getPrice()));
     }
 
     @Override
@@ -83,9 +86,15 @@ public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProduc
         return favoritesList.size();
     }
 
-    public void setFavoritesList(List<Product> favoritesList) {
-        this.favoritesList = favoritesList;
-        notifyDataSetChanged();
+    public void setFavoritesList(List<Product> list) {
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProductsDiffUtill(this.favoritesList, list), true);
+        this.favoritesList.clear();
+        this.favoritesList.addAll(list);
+        diffResult.dispatchUpdatesTo(this);
+
+//        this.favoritesList = favoritesList;
+//        notifyDataSetChanged();
     }
 
     public Product getProduct(int position) {

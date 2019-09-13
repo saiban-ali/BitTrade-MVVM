@@ -29,6 +29,7 @@ import java.util.List;
 public class ExploreProductsAdapter extends PagedListAdapter<Product, ExploreProductsAdapter.ProductViewHolder> {
 
     private static final String TAG = ExploreProductsAdapter.class.getName();
+    private List<Product> cartList;
     private List<Product> favoritesList;
 
     private Context context;
@@ -52,10 +53,11 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
 
     private OnItemClickListener onItemClickListener;
 
-    public ExploreProductsAdapter(Context context, List<Product> favoritesList) {
+    public ExploreProductsAdapter(Context context, List<Product> favoritesList, List<Product> cartList) {
         super(DIFF_CALLBACK);
         this.context = context;
         this.favoritesList = favoritesList;
+        this.cartList = cartList;
     }
 
     @NonNull
@@ -75,7 +77,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
 
         holder.titleText.setText(getItem(position).getTitle());
         holder.brandText.setText("Brand");
-        holder.priceText.setText(String.format("$%s", getItem(position).getPrice()));
+        holder.priceText.setText(String.format("$%.2f", getItem(position).getPrice()));
 
         String[] imageUrls = getItem(position).getImages();
 
@@ -114,6 +116,14 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
             holder.addToFavorites.setVisibility(View.VISIBLE);
             holder.removeFromFavorites.setVisibility(View.GONE);
         }
+
+        if (cartList.contains(getItem(position))) {
+            holder.addToCart.setVisibility(View.GONE);
+//            holder.removeFromFavorites.setVisibility(View.VISIBLE);
+        } else {
+            holder.addToCart.setVisibility(View.VISIBLE);
+//            holder.removeFromFavorites.setVisibility(View.GONE);
+        }
     }
 
     public Product getProduct(int position) {
@@ -127,6 +137,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
         void onAddToFavoritesClick(int position, View v, View itemView);
         void onRemoveFromFavoritesClick(int position, View v, View itemView);
         void onProductClick(int position, View v, View itemView);
+        void onAddToCartClick(int position, View v, View itemView);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -143,6 +154,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
         private TextView noImageText;
         private ImageView addToFavorites;
         private ImageView removeFromFavorites;
+        private ImageView addToCart;
 
         ProductViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -155,6 +167,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
             noImageText = itemView.findViewById(R.id.txt_no_image);
             addToFavorites = itemView.findViewById(R.id.favorites_icon);
             removeFromFavorites = itemView.findViewById(R.id.favorites_icon_fill);
+            addToCart = itemView.findViewById(R.id.add_to_cart_icon);
 
             setUpClickListeners(itemView, listener);
         }
@@ -191,6 +204,18 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onProductClick(position, v, itemView);
+                        }
+                    }
+                }
+            });
+
+            addToCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onAddToCartClick(position, v, itemView);
                         }
                     }
                 }

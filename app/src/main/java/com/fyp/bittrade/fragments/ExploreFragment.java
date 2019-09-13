@@ -25,6 +25,7 @@ import com.fyp.bittrade.R;
 import com.fyp.bittrade.adapters.ExploreProductsAdapter;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.utils.IFragmentCallBack;
+import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 import com.fyp.bittrade.viewmodels.ProductsViewModel;
 
@@ -45,6 +46,7 @@ public class ExploreFragment extends Fragment {
 //    private ProductsDataSource productsRepository;
     private ProductsViewModel productsViewModel;
     private FavoritesViewModel favoritesViewModel;
+    private CartViewModel cartViewModel;
 
     private IFragmentCallBack fragmentCallBack;
 
@@ -63,7 +65,7 @@ public class ExploreFragment extends Fragment {
         try {
             fragmentCallBack = (IFragmentCallBack) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
+            throw new ClassCastException(context.toString() + " must implement IFragmentCallBack");
         }
     }
 
@@ -99,6 +101,13 @@ public class ExploreFragment extends Fragment {
         });
 
         favoritesViewModel.getMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+
+            }
+        });
+
+        cartViewModel.getMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
             @Override
             public void onChanged(List<Product> products) {
 
@@ -177,6 +186,12 @@ public class ExploreFragment extends Fragment {
             public void onProductClick(int position, View v, View itemView) {
                 fragmentCallBack.onProductClick(exploreProductsAdapter.getProduct(position));
             }
+
+            @Override
+            public void onAddToCartClick(int position, View v, View itemView) {
+                v.setVisibility(View.GONE);
+                cartViewModel.add(exploreProductsAdapter.getProduct(position));
+            }
         });
 
 //        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -219,10 +234,11 @@ public class ExploreFragment extends Fragment {
 
         productsViewModel = ViewModelProviders.of(getActivity()).get(ProductsViewModel.class);
         favoritesViewModel = ViewModelProviders.of(getActivity()).get(FavoritesViewModel.class);
+        cartViewModel = ViewModelProviders.of(getActivity()).get(CartViewModel.class);
 
         recyclerView = container.findViewById(R.id.recycler_view_products_main);
         gridLayoutManager = new GridLayoutManager(context, 2);
-        exploreProductsAdapter = new ExploreProductsAdapter(context, favoritesViewModel.getList());
+        exploreProductsAdapter = new ExploreProductsAdapter(context, favoritesViewModel.getList(), cartViewModel.getList());
 //        productsRepository = ProductsDataSource.getInstance();
 
     }

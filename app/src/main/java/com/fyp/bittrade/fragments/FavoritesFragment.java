@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.adapters.FavoriteProductsAdapter;
 import com.fyp.bittrade.models.Product;
+import com.fyp.bittrade.utils.IFragmentCallBack;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class FavoritesFragment extends Fragment {
 
     private static final String TAG = FavoritesFragment.class.getName();
 
-    private List<Product> productList = new ArrayList<>();
+//    private List<Product> productList = new ArrayList<>();
 
     private Context context;
 
@@ -41,8 +42,21 @@ public class FavoritesFragment extends Fragment {
 
     private FavoritesViewModel favoritesViewModel;
 
+    private IFragmentCallBack fragmentCallBack;
+
     public FavoritesFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            fragmentCallBack = (IFragmentCallBack) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IFragmentCallBack");
+        }
     }
 
     @Override
@@ -96,7 +110,7 @@ public class FavoritesFragment extends Fragment {
 
             @Override
             public void onItemClick(int position, View v) {
-
+                fragmentCallBack.onProductClick(favoriteProductsAdapter.getProduct(position));
             }
         });
     }
@@ -113,7 +127,7 @@ public class FavoritesFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view_products_favorites);
         gridLayoutManager = new GridLayoutManager(context, 2);
-        favoriteProductsAdapter = new FavoriteProductsAdapter(productList, context);
+        favoriteProductsAdapter = new FavoriteProductsAdapter(context);
 
         favoritesViewModel = ViewModelProviders.of(getActivity()).get(FavoritesViewModel.class);
     }

@@ -87,11 +87,17 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.RED);
         }
+
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof ProductDetailFragment) {
+            bottomNavigation.setVisibility(View.GONE);
+        } else {
+            bottomNavigation.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onProductClick(Product product) {
-        findViewById(R.id.bottom_navigation).setVisibility(View.GONE);
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("product", product);
@@ -103,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();
+
+        findViewById(R.id.bottom_navigation).setVisibility(View.GONE);
     }
 
     @Override

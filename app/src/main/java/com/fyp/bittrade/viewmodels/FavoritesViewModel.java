@@ -21,10 +21,10 @@ public class FavoritesViewModel extends ViewModel {
         return mutableLiveData;
     }
 
-    public List<Product> getProductsList() {
-        List<Product> list = mutableLiveData.getValue();
-        return list;
-    }
+//    public List<Product> getProductsList() {
+//        List<Product> list = mutableLiveData.getValue();
+//        return list;
+//    }
 
     public List<Product> getList() {
         return list;
@@ -43,5 +43,9 @@ public class FavoritesViewModel extends ViewModel {
     public void remove(Product p) {
         list.remove(p);
         mutableLiveData.setValue(list);
+    }
+
+    public boolean hasProduct(Product p) {
+        return list.contains(p);
     }
 }

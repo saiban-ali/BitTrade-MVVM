@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/bottom_bar_size"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -43,11 +44,11 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_products_main"
+        android:id="@+id/recyclerview_cart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="@dimen/bottom_bar_size"
+        android:layout_marginBottom="118dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="1"
         tools:itemCount="5"
@@ -59,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_bar_size"
         android:weightSum="2"
+        android:layout_marginBottom="4dp"
         android:layout_gravity="bottom"
         android:background="@android:color/white"
         android:baselineAligned="false">
@@ -74,8 +76,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/calibri_bold"
                 android:text="@string/total"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
@@ -87,8 +89,10 @@
                 android:text="@string/_4500"
                 android:textColor="@color/colorPrice"
                 android:textSize="18sp"
-                android:layout_below="@+id/txt_total"
-                android:layout_alignStart="@+id/txt_total"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="-3dp"
+                android:layout_toEndOf="@id/txt_total"
+                android:layout_alignTop="@id/txt_total"/>
         </RelativeLayout>
 
         <RelativeLayout
