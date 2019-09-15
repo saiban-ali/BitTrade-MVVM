@@ -6,5 +6,6 @@ public interface IFragmentCallBack {
 
     void onProductClick(Product product);
     void onBackPressed();
+    void logout();
 
 }

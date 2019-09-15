@@ -6,12 +6,12 @@ import com.fyp.bittrade.models.Product;
 
 import java.util.List;
 
-public class ProductsDiffUtill extends DiffUtil.Callback {
+public class ProductsDiffUtil extends DiffUtil.Callback {
 
     private List<Product> newList;
     private List<Product> oldList;
 
-    public ProductsDiffUtill(List<Product> oldList, List<Product> newList) {
+    public ProductsDiffUtil(List<Product> oldList, List<Product> newList) {
         this.newList = newList;
         this.oldList = oldList;
     }

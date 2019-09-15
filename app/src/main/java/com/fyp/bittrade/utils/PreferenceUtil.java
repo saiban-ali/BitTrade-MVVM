@@ -1,0 +1,60 @@
+package com.fyp.bittrade.utils;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.fyp.bittrade.models.User;
+
+public class PreferenceUtil {
+
+    public PreferenceUtil() {
+    }
+
+    public static boolean saveUser(User user, String password, Context context) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("email", user.getEmail());
+        editor.putString("password", password);
+        editor.putString("username", user.getUsername());
+        editor.putString("message", user.getMessage());
+        editor.putBoolean("isSuccess", user.isSuccess());
+        editor.apply();
+
+        return true;
+    }
+
+    public static User getUser(Context context) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        User user = new User(preferences.getString("email", null), null);
+        user.setUsername(preferences.getString("username", null));
+        user.setMessgae(preferences.getString("message", null));
+        user.setSuccess(preferences.getBoolean("isSuccess", false));
+
+        if (user.getEmail() == null || user.getUsername() == null) {
+            user = null;
+        }
+
+        return user;
+    }
+
+//    public static String getUserPassword(String email, Context context) {
+//
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        return preferences.getString(email, null);
+//    }
+
+    public static void deleteUser(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("email", null);
+        editor.putString("password", null);
+        editor.putString("username", null);
+        editor.putString("message", null);
+        editor.putBoolean("isSuccess", false);
+        editor.apply();
+    }
+}

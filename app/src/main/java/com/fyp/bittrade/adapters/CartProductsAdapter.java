@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.models.Product;
-import com.fyp.bittrade.utils.ProductsDiffUtill;
+import com.fyp.bittrade.utils.ProductsDiffUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapter.CartViewHolder> {
 
@@ -60,7 +59,7 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
 
     public void setCartList(List<Product> list) {
 
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProductsDiffUtill(this.cartList, list), true);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProductsDiffUtil(this.cartList, list), true);
         this.cartList.clear();
         this.cartList.addAll(list);
         diffResult.dispatchUpdatesTo(this);

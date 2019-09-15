@@ -6,7 +6,6 @@
     <string name="favorites">Favorites</string>
     <string name="profile">Profile</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="explorefragment">ExploreFragment</string>
     <string name="cartfragment">CartFragment</string>
@@ -40,4 +39,8 @@
     <string name="add_to_cart">ADD TO CART</string>
     <string name="remove_from_cart">remove from cart</string>
     <string name="my_orders">My Orders</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="app_settings">App Settings</string>
+    <string name="withdraw"><u>Withdraw</u></string>
+    <string name="edit"><u>Edit</u></string>
 </resources>

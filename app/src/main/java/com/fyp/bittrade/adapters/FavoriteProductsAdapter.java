@@ -20,7 +20,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.models.Product;
-import com.fyp.bittrade.utils.ProductsDiffUtill;
+import com.fyp.bittrade.utils.ProductsDiffUtil;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -88,7 +88,7 @@ public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProduc
 
     public void setFavoritesList(List<Product> list) {
 
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProductsDiffUtill(this.favoritesList, list), true);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProductsDiffUtil(this.favoritesList, list), true);
         this.favoritesList.clear();
         this.favoritesList.addAll(list);
         diffResult.dispatchUpdatesTo(this);

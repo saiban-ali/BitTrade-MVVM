@@ -1,17 +1,18 @@
 package com.fyp.bittrade.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.fragments.CartFragment;
@@ -21,13 +22,16 @@ import com.fyp.bittrade.fragments.ProductDetailFragment;
 import com.fyp.bittrade.fragments.ProfileFragment;
 import com.fyp.bittrade.fragments.SellFragment;
 import com.fyp.bittrade.models.Product;
+import com.fyp.bittrade.models.User;
 import com.fyp.bittrade.utils.IFragmentCallBack;
+import com.fyp.bittrade.utils.PreferenceUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity implements IFragmentCallBack {
 
     private static final String TAG = MainActivity.class.getName();
+    private static final int LOGIN_CODE = 1;
 
     private BottomNavigationViewEx bottomNavigation;
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,7 +64,19 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         }
     };
 
+    private User user;
+
+    private boolean loggedIn = false;
+
     private void loadFragment(Fragment fragment) {
+
+        if (fragment instanceof ProfileFragment) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("user", user);
+
+            fragment.setArguments(bundle);
+        }
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
@@ -70,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (getIntent().hasExtra("user")) {
+            user = getIntent().getParcelableExtra("user");
+        }
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setTextSize(10);
@@ -113,10 +133,30 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         findViewById(R.id.bottom_navigation).setVisibility(View.GONE);
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        if (requestCode == LOGIN_CODE && resultCode == RESULT_OK) {
+//
+//            assert data != null;
+//            user = data.getParcelableExtra("user");
+//
+//            Toast.makeText(this, "Coming from Login", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void logout() {
+        PreferenceUtil.deleteUser(this);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     @Override
