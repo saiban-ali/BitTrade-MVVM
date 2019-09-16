@@ -22,14 +22,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fyp.bittrade.R;
+import com.fyp.bittrade.activities.MainActivity;
 import com.fyp.bittrade.adapters.CartProductsAdapter;
 import com.fyp.bittrade.models.Product;
+import com.fyp.bittrade.repositories.CartRepository;
 import com.fyp.bittrade.utils.IFragmentCallBack;
 import com.fyp.bittrade.viewmodels.CartViewModel;
+import com.fyp.bittrade.viewmodels.ProductsViewModel;
 
 import java.util.List;
+
+import okhttp3.ResponseBody;
 
 public class CartFragment extends Fragment {
 
@@ -41,6 +47,7 @@ public class CartFragment extends Fragment {
     private GridLayoutManager gridLayoutManager;
 
     private CartViewModel cartViewModel;
+    private ProductsViewModel productsViewModel;
 
     private TextView priceTextView;
     private IFragmentCallBack fragmentCallBack;
@@ -73,6 +80,8 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
 
         init(view);
+
+        cartProductsAdapter.setCartList(cartViewModel.getList());
 
         setUpToolbar(view);
 
@@ -119,11 +128,58 @@ public class CartFragment extends Fragment {
         cartProductsAdapter.setOnItemClickListener(new CartProductsAdapter.OnItemClickListener() {
             @Override
             public void onRemoveClick(int position, View v, View itemView) {
-                cartViewModel.remove(cartProductsAdapter.getProduct(position));
+                cartViewModel.remove(cartProductsAdapter.getProduct(position),
+                        ((MainActivity) getActivity()).getUser().getId(),
+                        new CartRepository.IResponseAddCartCallBack() {
+                            @Override
+                            public void onResponseSuccessful(ResponseBody response) {
+                                Toast.makeText(context, "Response Successful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onResponseUnsuccessful(ResponseBody responseBody) {
+                                Toast.makeText(context, "Response Not Successful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onCallFailed(String message) {
+                                Toast.makeText(context, "Call Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
 
             @Override
             public void onAddCountClick(int position, View v) {
+                List<Product> list = cartViewModel.getList();
+                Product p = list.get(position);
+                if (p.getProductCount() < p.getStock()) {
+                    p.incrementProductCount();
+
+//                list.remove(position);
+                    list.set(position, p);
+                    cartViewModel.setList(list);
+                    cartViewModel.incrementProductCount(
+                            ((MainActivity) getActivity()).getUser().getId(),
+                            p.getId(),
+                            p.getProductCount(),
+                            new CartRepository.IResponseAddCartCallBack() {
+                                @Override
+                                public void onResponseSuccessful(ResponseBody response) {
+                                    Toast.makeText(context, "Response Successful", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onResponseUnsuccessful(ResponseBody responseBody) {
+                                    Toast.makeText(context, "Response Not Successful", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onCallFailed(String message) {
+                                    Toast.makeText(context, "Call Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                    );
+                }
 //                cartHandler.incrementProductCount(position);
 //                cartRecyclerViewAdapter.notifyItemChanged(position);
 //                updatePrice();
@@ -131,6 +187,38 @@ public class CartFragment extends Fragment {
 
             @Override
             public void onMinusCountClick(int position, View v) {
+
+                List<Product> list = cartViewModel.getList();
+                Product p = list.get(position);
+                if (p.getProductCount() > 1) {
+                    p.decrementProductCount();
+//                list.remove(position);
+                    list.set(position, p);
+                    cartViewModel.setList(list);
+
+                    cartViewModel.decrementProductCount(
+                            ((MainActivity) getActivity()).getUser().getId(),
+                            p.getId(),
+                            p.getProductCount(),
+                            new CartRepository.IResponseAddCartCallBack() {
+                                @Override
+                                public void onResponseSuccessful(ResponseBody response) {
+                                    Toast.makeText(context, "Response Successful", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onResponseUnsuccessful(ResponseBody responseBody) {
+                                    Toast.makeText(context, "Response Not Successful", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onCallFailed(String message) {
+                                    Toast.makeText(context, "Call Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                    );
+                }
+
 //                if (cartHandler.getProduct(position).getProductCount() > 0) {
 //                    cartHandler.decrementProductCount(position);
 //                    cartRecyclerViewAdapter.notifyItemChanged(position);
@@ -150,6 +238,7 @@ public class CartFragment extends Fragment {
         gridLayoutManager = new GridLayoutManager(context, 1);
 
         cartViewModel = ViewModelProviders.of(getActivity()).get(CartViewModel.class);
+        productsViewModel = ViewModelProviders.of(getActivity()).get(ProductsViewModel.class);
     }
 
     public void setUpToolbar(View view) {

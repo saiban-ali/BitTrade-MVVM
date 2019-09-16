@@ -46,10 +46,15 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
         holder.productTitle.setText(cartList.get(position).getTitle());
         holder.productPrice.setText(String.format("$%.2f", cartList.get(position).getPrice()));
         holder.productBrand.setText("Brand");
+        holder.productCount.setText(String.format("%d", cartList.get(position).getProductCount()));
 
-        Glide.with(context)
-                .load(cartList.get(position).getImages()[0])
-                .into(holder.productImage);
+        if(cartList.get(position).getImages().length > 0) {
+            Glide.with(context)
+                    .load(cartList.get(position).getImages()[0])
+                    .into(holder.productImage);
+        } else {
+            holder.productImage.setImageResource(R.drawable.ic_logo_light);
+        }
     }
 
     @Override
@@ -59,10 +64,13 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
 
     public void setCartList(List<Product> list) {
 
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProductsDiffUtil(this.cartList, list), true);
-        this.cartList.clear();
-        this.cartList.addAll(list);
-        diffResult.dispatchUpdatesTo(this);
+//        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProductsDiffUtil(this.cartList, list), true);
+//        this.cartList.clear();
+//        this.cartList.addAll(list);
+//        diffResult.dispatchUpdatesTo(this);
+
+        cartList = list;
+        notifyDataSetChanged();
 
 //        this.cartList = list;
 //        notifyDataSetChanged();
@@ -95,6 +103,7 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
         ImageView removeFromCart;
         private ImageView addProductCount;
         private ImageView minusProductCount;
+        private TextView productCount;
 
         public CartViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
@@ -106,6 +115,7 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
             removeFromCart = itemView.findViewById(R.id.img_remove_product);
             addProductCount = itemView.findViewById(R.id.img_add_product);
             minusProductCount = itemView.findViewById(R.id.img_minus_product);
+            productCount = itemView.findViewById(R.id.txt_product_count);
 
             setUpListeners(itemView, onItemClickListener);
         }

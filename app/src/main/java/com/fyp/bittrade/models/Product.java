@@ -12,6 +12,13 @@ public class Product implements Parcelable {
 
     public static final int HAS_NO_IMAGE_URL = 0;
 
+    @SerializedName("_id")
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
     @SerializedName("images")
     private String[] images;
 
@@ -27,15 +34,19 @@ public class Product implements Parcelable {
     @SerializedName("stock")
     private int stock;
 
+    @SerializedName("quantity")
+    private int productCount;
+
     public Product() {
     }
 
-    public Product(String[] images, String title, String description, double price, int stock) {
+    public Product(String[] images, String title, String description, double price, int stock, int productCount) {
         this.images = images;
         this.title = title;
         this.description = description;
         this.price = price;
         this.stock = stock;
+        this.productCount = productCount;
     }
 
     protected Product(Parcel in) {
@@ -44,6 +55,7 @@ public class Product implements Parcelable {
         description = in.readString();
         price = in.readDouble();
         stock = in.readInt();
+        productCount = in.readInt();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -90,5 +102,18 @@ public class Product implements Parcelable {
         dest.writeString(description);
         dest.writeDouble(price);
         dest.writeInt(stock);
+        dest.writeInt(productCount);
+    }
+
+    public int getProductCount() {
+        return productCount;
+    }
+
+    public void incrementProductCount() {
+        productCount++;
+    }
+
+    public void decrementProductCount() {
+        productCount--;
     }
 }

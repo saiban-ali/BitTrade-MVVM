@@ -2,7 +2,6 @@ package com.fyp.bittrade.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -22,19 +21,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.fyp.bittrade.R;
-import com.fyp.bittrade.activities.LoginActivity;
+import com.fyp.bittrade.activities.MainActivity;
 import com.fyp.bittrade.adapters.ExploreProductsAdapter;
 import com.fyp.bittrade.models.Product;
+import com.fyp.bittrade.repositories.CartRepository;
 import com.fyp.bittrade.utils.IFragmentCallBack;
-import com.fyp.bittrade.utils.PreferenceUtil;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 import com.fyp.bittrade.viewmodels.ProductsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
 
 public class ExploreFragment extends Fragment {
 
@@ -193,8 +195,34 @@ public class ExploreFragment extends Fragment {
 
             @Override
             public void onAddToCartClick(int position, View v, View itemView) {
-                v.setVisibility(View.GONE);
-                cartViewModel.add(exploreProductsAdapter.getProduct(position));
+//                v.setVisibility(View.GONE);
+
+                Product p = exploreProductsAdapter.getProduct(position);
+
+                if (cartViewModel.hasProduct(p)) {
+                    Toast.makeText(context, "Already in Cart", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                cartViewModel.add(
+                        exploreProductsAdapter.getProduct(position),
+                        ((MainActivity) getActivity()).getUser().getId(),
+                        new CartRepository.IResponseAddCartCallBack() {
+                            @Override
+                            public void onResponseSuccessful(ResponseBody response) {
+                                Toast.makeText(context, "Added to cart", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onResponseUnsuccessful(ResponseBody responseBody) {
+                                Toast.makeText(context, "Response Unsuccessful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onCallFailed(String message) {
+                                Toast.makeText(context, "Call Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 

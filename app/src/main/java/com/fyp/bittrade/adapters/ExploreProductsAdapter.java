@@ -117,13 +117,13 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
             holder.removeFromFavorites.setVisibility(View.GONE);
         }
 
-        if (cartList.contains(getItem(position))) {
-            holder.addToCart.setVisibility(View.GONE);
-//            holder.removeFromFavorites.setVisibility(View.VISIBLE);
-        } else {
-            holder.addToCart.setVisibility(View.VISIBLE);
-//            holder.removeFromFavorites.setVisibility(View.GONE);
-        }
+//        if (cartList.contains(getItem(position))) {
+//            holder.addToCart.setVisibility(View.GONE);
+////            holder.removeFromFavorites.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.addToCart.setVisibility(View.VISIBLE);
+////            holder.removeFromFavorites.setVisibility(View.GONE);
+//        }
     }
 
     public Product getProduct(int position) {

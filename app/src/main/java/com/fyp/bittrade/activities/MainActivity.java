@@ -1,10 +1,10 @@
 package com.fyp.bittrade.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,12 +21,17 @@ import com.fyp.bittrade.fragments.FavoritesFragment;
 import com.fyp.bittrade.fragments.ProductDetailFragment;
 import com.fyp.bittrade.fragments.ProfileFragment;
 import com.fyp.bittrade.fragments.SellFragment;
+import com.fyp.bittrade.models.CartListResponse;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.models.User;
+import com.fyp.bittrade.repositories.CartRepository;
 import com.fyp.bittrade.utils.IFragmentCallBack;
 import com.fyp.bittrade.utils.PreferenceUtil;
+import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity implements IFragmentCallBack {
 
@@ -66,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
 
     private User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    private CartViewModel cartViewModel;
+
     private boolean loggedIn = false;
 
     private void loadFragment(Fragment fragment) {
@@ -91,6 +102,27 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
             user = getIntent().getParcelableExtra("user");
         }
 
+        cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        CartRepository cartRepository = CartRepository.getInstance();
+        cartRepository.getCart(user.getId(), new CartRepository.ICartListResponseCallBack() {
+            @Override
+            public void onResponseSuccessful(CartListResponse response) {
+                Toast.makeText(MainActivity.this, "ResponseSuccessful", Toast.LENGTH_SHORT).show();
+                cartViewModel.setList(response.getProductList());
+                cartViewModel.setPriceLiveData(response.getTotalPrice());
+            }
+
+            @Override
+            public void onResponseUnsuccessful(CartListResponse responseBody) {
+                Toast.makeText(MainActivity.this, "ResponseNotSuccessful", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCallFailed(String message) {
+                Toast.makeText(MainActivity.this, "CallFailed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setTextSize(10);
 
@@ -114,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         } else {
             bottomNavigation.setVisibility(View.VISIBLE);
         }
+
     }
 
     @Override

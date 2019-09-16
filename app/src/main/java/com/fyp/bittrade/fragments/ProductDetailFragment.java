@@ -175,11 +175,11 @@ public class ProductDetailFragment extends Fragment {
     }
 
     private void removeFromCart() {
-        cartViewModel.remove(product);
+//        cartViewModel.remove(product);
     }
 
     private void addToCart() {
-        cartViewModel.add(product);
+//        cartViewModel.add(product);
     }
 
     private void removeFromFavorite() {

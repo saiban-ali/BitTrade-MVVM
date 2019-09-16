@@ -20,6 +20,7 @@ public class PreferenceUtil {
         editor.putString("username", user.getUsername());
         editor.putString("message", user.getMessage());
         editor.putBoolean("isSuccess", user.isSuccess());
+        editor.putString("id", user.getId());
         editor.apply();
 
         return true;
@@ -31,10 +32,11 @@ public class PreferenceUtil {
 
         User user = new User(preferences.getString("email", null), null);
         user.setUsername(preferences.getString("username", null));
-        user.setMessgae(preferences.getString("message", null));
+        user.setMessage(preferences.getString("message", null));
         user.setSuccess(preferences.getBoolean("isSuccess", false));
+        user.setId(preferences.getString("id", null));
 
-        if (user.getEmail() == null || user.getUsername() == null) {
+        if (user.getEmail() == null || user.getUsername() == null || user.getId() == null) {
             user = null;
         }
 
@@ -55,6 +57,7 @@ public class PreferenceUtil {
         editor.putString("username", null);
         editor.putString("message", null);
         editor.putBoolean("isSuccess", false);
+        editor.putString("id", null);
         editor.apply();
     }
 }

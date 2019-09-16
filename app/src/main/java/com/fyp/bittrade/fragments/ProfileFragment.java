@@ -1,18 +1,23 @@
 package com.fyp.bittrade.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.dialogs.ChangePasswordDialog;
@@ -20,6 +25,10 @@ import com.fyp.bittrade.dialogs.ChangeUsernameDialog;
 import com.fyp.bittrade.models.User;
 import com.fyp.bittrade.utils.IDialogCallBack;
 import com.fyp.bittrade.utils.IFragmentCallBack;
+
+import java.io.IOException;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment implements IDialogCallBack {
 
@@ -31,6 +40,8 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
     private ImageView editUsername;
     private Button changePassword;
     private Button logout;
+    private Button changeProfilePicture;
+    private CircleImageView imageView;
 
     private IFragmentCallBack fragmentCallBack;
 
@@ -103,6 +114,14 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
                 fragmentCallBack.logout();
             }
         });
+
+        changeProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 2);
+            }
+        });
     }
 
     private void init(View view) {
@@ -112,6 +131,8 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
         editUsername = view.findViewById(R.id.edit_username);
         changePassword = view.findViewById(R.id.btn_change_password);
         logout = view.findViewById(R.id.btn_logout);
+        changeProfilePicture = view.findViewById(R.id.btn_change_dp);
+        imageView = view.findViewById(R.id.profile_image);
     }
 
     @Override
@@ -134,5 +155,22 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
         // TODO: 9/14/2019 make server call to change password
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == getActivity().RESULT_OK) {
+            if (requestCode == 2) {
 
+                Uri imageUri = data.getData();
+                try {
+                    Bitmap bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                    imageView.setImageBitmap(bitmapImage);
+                } catch (IOException e) {
+                    Toast.makeText(getActivity(), "Unable to get image try again", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+                Toast.makeText(getActivity(), "Pic Selected", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

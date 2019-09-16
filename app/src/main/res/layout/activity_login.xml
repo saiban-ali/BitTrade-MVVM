@@ -130,16 +130,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
-                android:id="@+id/btn_login"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/checkout_button_backgeound"
-                android:fontFamily="@font/calibri_bold"
-                android:text="LOGIN"
-                android:layout_marginBottom="8dp"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp" />
+                android:layout_height="wrap_content" >
+
+                <ProgressBar
+                    android:id="@+id/login_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/checkout_button_backgeound"
+                    android:fontFamily="@font/calibri_bold"
+                    android:text="LOGIN"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    android:visibility="visible"/>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

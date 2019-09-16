@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private EditText emailField;
     private EditText passwordField;
+    private ProgressBar loginProgress;
 
     private Client client;
 
@@ -71,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setVisibility(View.GONE);
+                loginProgress.setVisibility(View.VISIBLE);
                 performLoginOperations();
             }
         });
@@ -115,10 +119,15 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "Something went wrong! Login Again", Toast.LENGTH_SHORT).show();
+                            loginButton.setVisibility(View.VISIBLE);
+                            loginProgress.setVisibility(View.GONE);
                         }
                     }
                 } else {
                     Toast.makeText(LoginActivity.this, "Email or password is incorrect", Toast.LENGTH_SHORT).show();
+
+                    loginButton.setVisibility(View.VISIBLE);
+                    loginProgress.setVisibility(View.GONE);
                 }
             }
 
@@ -126,6 +135,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
                 Toast.makeText(LoginActivity.this, "Network Error! Login Again", Toast.LENGTH_SHORT).show();
+
+                loginButton.setVisibility(View.VISIBLE);
+                loginProgress.setVisibility(View.GONE);
             }
         });
 
@@ -217,6 +229,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.btn_login);
         emailField = findViewById(R.id.input_email);
         passwordField = findViewById(R.id.input_password);
+        loginProgress = findViewById(R.id.login_progress);
     }
 
     @Override
