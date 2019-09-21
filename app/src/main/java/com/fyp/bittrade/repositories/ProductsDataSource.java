@@ -31,7 +31,7 @@ public class ProductsDataSource extends PageKeyedDataSource<Integer, Product> {
             @Override
             public void onResponse(@NotNull Call<ProductsResponse> call, @NotNull Response<ProductsResponse> response) {
                 if (response.isSuccessful()) {
-                    assert response.body() != null;
+
                     callback.onResult(response.body().getProductList(), null, FIRST_PAGE + 1);
                     Log.d(TAG, "loadInitial: onResponse: response successful");
                 } else {
@@ -58,7 +58,6 @@ public class ProductsDataSource extends PageKeyedDataSource<Integer, Product> {
 
                     Integer key = (params.key > 1) ? params.key - 1 : null;
 
-                    assert response.body() != null;
                     callback.onResult(response.body().getProductList(), key);
                     Log.d(TAG, "loadBefore: onResponse: response successful");
                 } else {

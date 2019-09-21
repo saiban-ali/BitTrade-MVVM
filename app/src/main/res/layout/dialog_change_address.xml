@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/background_light"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Address"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginStart="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_below="@id/label"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:textSize="16sp"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/colorText"
+            android:labelFor="@+id/address"/>
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/black"
+            android:fontFamily="@font/calibri_regular"
+            android:inputType="text"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/colorText"
+            android:textSize="18sp"
+            tools:text="@tools:sample/lorem/random" />
+
+        <Spinner
+            android:id="@+id/country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/calibri_regular"
+            android:backgroundTint="@android:color/black" />
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_zip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zip"
+                android:textSize="16sp"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/colorText"
+                android:labelFor="@+id/zip"
+                app:layout_constraintStart_toStartOf="@id/zip"
+                app:layout_constraintBottom_toTopOf="@id/zip"/>
+
+            <EditText
+                android:id="@+id/zip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="@font/calibri_regular"
+                android:inputType="number"
+                android:textColor="@color/colorText"
+                android:textSize="18sp"
+                android:layout_marginTop="4dp"
+                tools:text="@tools:sample/us_zipcodes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/city"/>
+
+            <TextView
+                android:id="@+id/txt_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="City"
+                android:textSize="16sp"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/colorText"
+                android:labelFor="@+id/city"
+                app:layout_constraintStart_toStartOf="@id/city"
+                app:layout_constraintBottom_toTopOf="@id/city"/>
+
+            <EditText
+                android:id="@+id/city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/black"
+                android:fontFamily="@font/calibri_regular"
+                android:inputType="text"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/colorText"
+                android:textSize="18sp"
+                tools:text="@tools:sample/cities"
+                app:layout_constraintBaseline_toBaselineOf="@id/zip"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/zip"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txt_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone"
+            android:textSize="16sp"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/colorText"
+            android:labelFor="@+id/phone"/>
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/black"
+            android:fontFamily="@font/calibri_regular"
+            android:inputType="phone"
+            android:textColor="@color/colorText"
+            android:textSize="18sp"
+            tools:text="@tools:sample/us_phones" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:layout_below="@+id/content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"/>
+
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CANCEL"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:layout_below="@+id/content"
+        android:layout_toStartOf="@+id/ok"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="32dp" />
+
+</RelativeLayout>

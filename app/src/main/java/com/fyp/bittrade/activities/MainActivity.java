@@ -3,6 +3,7 @@ package com.fyp.bittrade.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -10,11 +11,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.fyp.bittrade.R;
+import com.fyp.bittrade.fragments.AddProductImagesFragment;
 import com.fyp.bittrade.fragments.CartFragment;
 import com.fyp.bittrade.fragments.ExploreFragment;
 import com.fyp.bittrade.fragments.FavoritesFragment;
@@ -22,6 +25,7 @@ import com.fyp.bittrade.fragments.ProductDetailFragment;
 import com.fyp.bittrade.fragments.ProfileFragment;
 import com.fyp.bittrade.fragments.SellFragment;
 import com.fyp.bittrade.models.CartListResponse;
+import com.fyp.bittrade.models.Contact;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.models.User;
 import com.fyp.bittrade.repositories.CartRepository;
@@ -90,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
+        if(fragment instanceof AddProductImagesFragment) {
+            fragmentTransaction.addToBackStack(null);
+        }
         fragmentTransaction.commit();
     }
 
@@ -98,8 +105,11 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getIntent().hasExtra("user")) {
-            user = getIntent().getParcelableExtra("user");
+        if (getIntent().hasExtra("userBundle")) {
+            Bundle bundle = getIntent().getBundleExtra("userBundle");
+            user = bundle.getParcelable("user");
+            Contact contact = bundle.getParcelable("contact");
+            user.setContact(contact);
         }
 
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
@@ -147,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
             bottomNavigation.setVisibility(View.VISIBLE);
         }
 
+//        loadFragment(new AddProductImagesFragment());
     }
 
     @Override
@@ -163,7 +174,15 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
                 .addToBackStack(null)
                 .commit();
 
+        hideBottomNavigation();
+    }
+
+    public void hideBottomNavigation() {
         findViewById(R.id.bottom_navigation).setVisibility(View.GONE);
+    }
+
+    public void showBottomNavigation() {
+        findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
     }
 
 //    @Override
@@ -190,6 +209,25 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void loadAddProductImagesFragment(Product product) {
+        Fragment fragment = new AddProductImagesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("product", product);
+
+        fragment.setArguments(bundle);
+
+        loadFragment(fragment);
+        hideBottomNavigation();
+    }
+
+    @Override
+    public void loadExploreFragment() {
+        getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        bottomNavigation.setSelectedItemId(R.id.bottom_nav_explore);
+        showBottomNavigation();
     }
 
     @Override

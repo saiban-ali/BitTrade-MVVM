@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fyp.bittrade.R;
@@ -48,6 +49,7 @@ public class ExploreFragment extends Fragment {
     private RecyclerView recyclerView;
     private ExploreProductsAdapter exploreProductsAdapter;
     private GridLayoutManager gridLayoutManager;
+    private RelativeLayout errorLayout;
 
 //    private ProductsDataSource productsRepository;
     private ProductsViewModel productsViewModel;
@@ -272,7 +274,7 @@ public class ExploreFragment extends Fragment {
         gridLayoutManager = new GridLayoutManager(context, 2);
         exploreProductsAdapter = new ExploreProductsAdapter(context, favoritesViewModel.getList(), cartViewModel.getList());
 //        productsRepository = ProductsDataSource.getInstance();
-
+//        errorLayout = container.findViewById(R.id.layout_error);
     }
 
     @Override
@@ -286,6 +288,10 @@ public class ExploreFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.logout:
                 fragmentCallBack.logout();
+                return true;
+
+            case R.id.refresh:
+                productsViewModel.refreshList();
                 return true;
 
             default:

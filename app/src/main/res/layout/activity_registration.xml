@@ -72,35 +72,64 @@
             app:layout_constraintStart_toStartOf="@+id/txt_subtext_login"
             app:layout_constraintTop_toBottomOf="@+id/txt_subtext_login">
 
-            <EditText
-                android:id="@+id/input_name"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:fontFamily="@font/calibri_regular"
-                android:hint="Username"
-                android:textColorHint="@color/colorTextLight"
-                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                android:textColor="@color/colorText"
-                android:textSize="18sp"
-                android:backgroundTint="@android:color/black"
-                tools:text="@tools:sample/full_names" />
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_first_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:backgroundTint="@android:color/black"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                    android:fontFamily="@font/calibri_regular"
+                    android:hint="First Name"
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorTextLight"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/input_last_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@tools:sample/first_names" />
+
+                <EditText
+                    android:id="@+id/input_last_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:backgroundTint="@android:color/black"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                    android:fontFamily="@font/calibri_regular"
+                    android:hint="Last Name"
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorTextLight"
+                    android:textSize="18sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/input_first_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/input_first_name"
+                    app:layout_constraintTop_toTopOf="@id/input_first_name"
+                    tools:text="@tools:sample/last_names" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <EditText
-                android:id="@+id/input_emial"
+                android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
+                android:backgroundTint="@android:color/black"
                 android:fontFamily="@font/calibri_regular"
                 android:hint="E-mail"
-                android:textColorHint="@color/colorTextLight"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/colorText"
+                android:textColorHint="@color/colorTextLight"
                 android:textSize="18sp"
-                android:backgroundTint="@android:color/black"
-                tools:text="@tools:sample/full_names"
-                android:textColor="@color/colorText"/>
+                tools:text="@tools:sample/full_names" />
 
             <EditText
                 android:id="@+id/input_password"
@@ -146,16 +175,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
-                android:id="@+id/btn_regiter"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/checkout_button_backgeound"
-                android:fontFamily="@font/calibri_bold"
-                android:text="Register"
-                android:layout_marginBottom="8dp"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp" />
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/register_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/btn_regiter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/checkout_button_backgeound"
+                    android:fontFamily="@font/calibri_bold"
+                    android:text="Register"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

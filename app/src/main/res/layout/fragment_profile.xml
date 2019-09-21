@@ -176,6 +176,7 @@
                         app:layout_constraintBottom_toBottomOf="parent">
 
                         <TextView
+                            android:id="@+id/address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="H#17, Captain Jamal Road, Sanda"
@@ -184,6 +185,7 @@
                             android:fontFamily="@font/calibri_regular"/>
 
                         <TextView
+                            android:id="@+id/city_zip"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Lahore, 54000"
@@ -192,6 +194,7 @@
                             android:fontFamily="@font/calibri_regular"/>
 
                         <TextView
+                            android:id="@+id/country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Pakistan"

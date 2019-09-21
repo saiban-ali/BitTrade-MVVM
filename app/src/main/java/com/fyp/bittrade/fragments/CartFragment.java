@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class CartFragment extends Fragment {
     private RecyclerView recyclerView;
     private CartProductsAdapter cartProductsAdapter;
     private GridLayoutManager gridLayoutManager;
+    private Button checkoutButton;
 
     private CartViewModel cartViewModel;
     private ProductsViewModel productsViewModel;
@@ -89,9 +91,20 @@ public class CartFragment extends Fragment {
 
         setUpObservers();
 
+        setUpCheckoutButton();
+
 //        updatePrice();
 
         return view;
+    }
+
+    private void setUpCheckoutButton() {
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 //    private void updatePrice() {
@@ -236,6 +249,7 @@ public class CartFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview_cart);
         cartProductsAdapter = new CartProductsAdapter(context);
         gridLayoutManager = new GridLayoutManager(context, 1);
+        checkoutButton = view.findViewById(R.id.btn_checkout);
 
         cartViewModel = ViewModelProviders.of(getActivity()).get(CartViewModel.class);
         productsViewModel = ViewModelProviders.of(getActivity()).get(ProductsViewModel.class);

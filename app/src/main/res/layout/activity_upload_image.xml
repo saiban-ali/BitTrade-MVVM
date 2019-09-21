@@ -18,7 +18,7 @@
         android:id="@+id/image_wrapper_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/bottom_bar_size"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -34,9 +34,10 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/btn_upload_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/checkout_button_backgeound"
         android:text="Upload Image"
         android:textAllCaps="false"
@@ -47,7 +48,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/checkout_button_backgeound"
+        android:text="Done"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/btn_upload_image"
+        app:layout_constraintStart_toStartOf="@id/btn_upload_image"
+        app:layout_constraintEnd_toEndOf="@id/btn_upload_image"/>
+
+    <ProgressBar
+        android:id="@+id/upload_image_progress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btn_upload_image"
+        app:layout_constraintStart_toStartOf="@id/btn_upload_image"
+        app:layout_constraintEnd_toEndOf="@id/btn_upload_image"/>
+
     <TextView
+        android:id="@+id/txt_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

@@ -5,37 +5,103 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class User implements Parcelable {
 
-    @SerializedName("id")
+    /**
+     * {
+     *    "success": true,
+     *    "message": "Sucessfully Edited the Address data",
+     *    "data": {
+     *        "email_verified": false,
+     *        "addresses_isAvailavle": false,
+     *        "phone_verified": false,
+     *        "payment_method_added": false,
+     *        "_id": "5d80866e73c8f529c0e47244",
+     *        "first_name": "zahid",
+     *        "last_name": "Tariq",
+     *        "email": "zahid@facebook.com",
+     *        "password": "zahid123",
+     *        "payment_method": [],
+     *        "createdAt": "2019-09-17T07:08:30.162Z",
+     *        "updatedAt": "2019-09-17T07:08:30.162Z",
+     *        "__v": 0
+     *    }
+     * }
+     **/
+
+    // TODO: 9/17/2019 Payment Method Model
+
+
+    @SerializedName("_id")
     private String id;
 
-    @SerializedName("name")
-    private String username;
+    @SerializedName("first_name")
+    private String firstName;
+
+    @SerializedName("last_name")
+    private String lastName;
 
     @SerializedName("email")
     private String email;
 
+    @SerializedName("password")
     private String password;
 
-    @SerializedName("message")
-    private String message;
+    @SerializedName("profile_image")
+    private String profileImageUrl;
 
-    @SerializedName("Success")
-    private boolean success;
+    @SerializedName("phone")
+    private String phoneNumber;
+
+    @SerializedName("address")
+    private Contact contact;
+
+    @SerializedName("payment_method_added")
+    private boolean isPaymentMethodAvailable;
+
+    @SerializedName("phone_verified")
+    private boolean isPhoneVarified;
+
+    @SerializedName("addresses_is_availavle")
+    private boolean isAddressAvailable;
+
+    @SerializedName("email_verified")
+    private boolean isEmailVarified;
+
+    @SerializedName("createdAt")
+    private String createdAt;
+
+    @SerializedName("updatedAt")
+    private String updatedAt;
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
+    public User(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
     protected User(Parcel in) {
-        username = in.readString();
+        id = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
         email = in.readString();
         password = in.readString();
-        message = in.readString();
-        success = in.readByte() != 0;
-        id = in.readString();
+        profileImageUrl = in.readString();
+        phoneNumber = in.readString();
+        isPaymentMethodAvailable = in.readByte() != 0;
+        isPhoneVarified = in.readByte() != 0;
+        isAddressAvailable = in.readByte() != 0;
+        isEmailVarified = in.readByte() != 0;
+        createdAt = in.readString();
+        updatedAt = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -50,24 +116,36 @@ public class User implements Parcelable {
         }
     };
 
-    public String getUsername() {
-        return username;
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
         return email;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getId() {
@@ -78,6 +156,42 @@ public class User implements Parcelable {
         this.id = id;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public boolean isPaymentMethodAvailable() {
+        return isPaymentMethodAvailable;
+    }
+
+    public boolean isPhoneVarified() {
+        return isPhoneVarified;
+    }
+
+    public boolean isAddressAvailable() {
+        return isAddressAvailable;
+    }
+
+    public boolean isEmailVarified() {
+        return isEmailVarified;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -85,19 +199,18 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(username);
+        dest.writeString(id);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
         dest.writeString(email);
         dest.writeString(password);
-        dest.writeString(message);
-        dest.writeByte((byte) (success ? 1 : 0));
-        dest.writeString(id);
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
+        dest.writeString(profileImageUrl);
+        dest.writeString(phoneNumber);
+        dest.writeByte((byte) (isPaymentMethodAvailable ? 1 : 0));
+        dest.writeByte((byte) (isPhoneVarified ? 1 : 0));
+        dest.writeByte((byte) (isAddressAvailable ? 1 : 0));
+        dest.writeByte((byte) (isEmailVarified ? 1 : 0));
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
     }
 }

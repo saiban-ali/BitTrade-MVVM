@@ -188,7 +188,7 @@
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/calibri_regular"
                                 android:paddingTop="5dp"
-                                android:text="@string/devices"
+                                android:text="@string/electronics"
                                 android:textAlignment="center"
                                 android:textColor="@color/colorText"
                                 android:textSize="12sp" />
@@ -327,6 +327,37 @@
         tools:itemCount="5"
         tools:listitem="@layout/cardview_item"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/layout_error"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:visibility="gone">-->
+
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@android:color/background_light"-->
+<!--            android:alpha="0.5"/>-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/network_error_image"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:srcCompat="@drawable/ic_portable_wifi_off_black_24dp"-->
+<!--            android:layout_centerInParent="true"/>-->
+
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:background="@color/colorTextLight"-->
+<!--            android:text="Refresh"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_below="@id/network_error_image"-->
+<!--            android:layout_centerHorizontal="true" />-->
+
+<!--    </RelativeLayout>-->
 
 
 

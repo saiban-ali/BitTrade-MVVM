@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="categories">
+        <item>Electronics Accessories</item>
+        <item>Electronics Devices</item>
+        <item>Furniture &amp; Home Decor</item>
+        <item>Gadgets</item>
+        <item>Gaming</item>
+        <item>Health &amp; Beauty</item>
+        <item>Home Appliances</item>
+        <item>Kids</item>
+        <item>Men\'s Fashion</item>
+        <item>Mobile</item>
+        <item>Sports &amp; Outdoor</item>
+        <item>Vehicles</item>
+        <item>Watches &amp; Jewellery</item>
+        <item>Women\'s Fashion</item>
+    </string-array>
+
+</resources>

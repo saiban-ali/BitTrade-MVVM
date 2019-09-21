@@ -7,7 +7,7 @@ import androidx.paging.PageKeyedDataSource;
 
 import com.fyp.bittrade.models.Product;
 
-public class ProductDataSourceFactory extends DataSource.Factory {
+public class ProductsDataSourceFactory extends DataSource.Factory {
 
     private MutableLiveData<PageKeyedDataSource<Integer, Product>> data = new MutableLiveData<>();
 

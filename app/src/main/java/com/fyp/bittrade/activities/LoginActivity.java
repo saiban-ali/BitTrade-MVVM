@@ -13,11 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.api.Client;
 import com.fyp.bittrade.api.Service;
+import com.fyp.bittrade.models.Contact;
 import com.fyp.bittrade.models.User;
+import com.fyp.bittrade.models.UserResponse;
 import com.fyp.bittrade.utils.PreferenceUtil;
 
 import retrofit2.Call;
@@ -47,7 +50,17 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, MainActivity.class);
             User user = PreferenceUtil.getUser(this);
-            intent.putExtra("user", user);
+            user.setContact(PreferenceUtil.getAddress(this));
+            user.setPhoneNumber(PreferenceUtil.getPhone(this));
+            user.setProfileImageUrl(PreferenceUtil.getImageUrl(this));
+
+            Contact contact = PreferenceUtil.getAddress(this);
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("user", user);
+            bundle.putParcelable("contact", contact);
+
+            intent.putExtra("userBundle", bundle);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
@@ -92,6 +105,9 @@ public class LoginActivity extends AppCompatActivity {
             final String password = passwordField.getText().toString();
 
             sendLoginRequest(email, password);
+        } else {
+            loginButton.setVisibility(View.VISIBLE);
+            loginProgress.setVisibility(View.GONE);
         }
 
     }
@@ -103,17 +119,20 @@ public class LoginActivity extends AppCompatActivity {
         Client client = Client.getInstance();
         Retrofit retrofit = client.getClient();
         Service service = retrofit.create(Service.class);
-        Call<User> call = service.sendLoginRequest(user);
-        call.enqueue(new Callback<User>() {
+        Call<UserResponse> call = service.sendLoginRequest(user);
+        call.enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
 //                        getIntent().putExtra("user", response.body());
 //                        setResult(RESULT_OK, new Intent().putExtra("user", response.body()));
-                        if (PreferenceUtil.saveUser(response.body(), password, context)) {
+                        if (PreferenceUtil.saveUser(response.body().getUser(), password, context)) {
                             Intent intent = new Intent(context, MainActivity.class);
-                            intent.putExtra("user", response.body());
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("user", response.body().getUser());
+                            bundle.putParcelable("contact", response.body().getUser().getContact());
+                            intent.putExtra("userBundle", bundle);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             finish();
@@ -132,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<UserResponse> call, Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
                 Toast.makeText(LoginActivity.this, "Network Error! Login Again", Toast.LENGTH_SHORT).show();
 

@@ -3,9 +3,6 @@ package com.fyp.bittrade.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.google.gson.annotations.SerializedName;
 
 public class Product implements Parcelable {
@@ -37,6 +34,9 @@ public class Product implements Parcelable {
     @SerializedName("quantity")
     private int productCount;
 
+    @SerializedName("category")
+    private String category;
+
     public Product() {
     }
 
@@ -56,6 +56,7 @@ public class Product implements Parcelable {
         price = in.readDouble();
         stock = in.readInt();
         productCount = in.readInt();
+        category = in.readString();
     }
 
     public static final Creator<Product> CREATOR = new Creator<Product>() {
@@ -69,6 +70,14 @@ public class Product implements Parcelable {
             return new Product[size];
         }
     };
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String[] getImages() {
         return images;
@@ -90,6 +99,30 @@ public class Product implements Parcelable {
         return stock;
     }
 
+    public void setImages(String[] images) {
+        this.images = images;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public void setProductCount(int productCount) {
+        this.productCount = productCount;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -103,6 +136,7 @@ public class Product implements Parcelable {
         dest.writeDouble(price);
         dest.writeInt(stock);
         dest.writeInt(productCount);
+        dest.writeString(category);
     }
 
     public int getProductCount() {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatCheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textColor="@android:color/black"
+    android:background="@drawable/spinner_background"
+    android:textAllCaps="false"
+    android:textSize="18sp">
+
+</androidx.appcompat.widget.AppCompatCheckedTextView>
