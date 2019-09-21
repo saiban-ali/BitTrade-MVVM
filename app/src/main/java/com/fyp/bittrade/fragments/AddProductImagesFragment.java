@@ -16,6 +16,7 @@ import android.os.Bundle;
 
 import androidx.annotation.AnyRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.gridlayout.widget.GridLayout;
@@ -85,6 +86,7 @@ public class AddProductImagesFragment extends Fragment implements IAddProductCal
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle("Select Images");
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         Button backButton = view.findViewById(R.id.btn_back);
         backButton.setOnClickListener(new View.OnClickListener() {

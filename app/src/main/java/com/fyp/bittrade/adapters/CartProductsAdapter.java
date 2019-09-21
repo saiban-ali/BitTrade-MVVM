@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,10 +25,12 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
     private List<Product> cartList;
     private Context context;
     private OnItemClickListener onItemClickListener;
+    private boolean isInCheckout;
 
-    public CartProductsAdapter(Context context) {
+    public CartProductsAdapter(Context context, boolean isInCheckout) {
         this.cartList = new ArrayList<>();
         this.context = context;
+        this.isInCheckout = isInCheckout;
     }
 
     @NonNull
@@ -43,6 +46,12 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
+
+        if (isInCheckout) {
+            holder.removeFromCart.setVisibility(View.GONE);
+            holder.countLayout.setVisibility(View.GONE);
+        }
+
         holder.productTitle.setText(cartList.get(position).getTitle());
         holder.productPrice.setText(String.format("$%.2f", cartList.get(position).getPrice()));
         holder.productBrand.setText("Brand");
@@ -83,7 +92,6 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
         return null;
     }
 
-
     public interface OnItemClickListener {
         void onRemoveClick(int position, View v, View itemView);
         void onAddCountClick(int position, View v);
@@ -104,6 +112,7 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
         private ImageView addProductCount;
         private ImageView minusProductCount;
         private TextView productCount;
+        private LinearLayout countLayout;
 
         public CartViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
@@ -116,6 +125,7 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
             addProductCount = itemView.findViewById(R.id.img_add_product);
             minusProductCount = itemView.findViewById(R.id.img_minus_product);
             productCount = itemView.findViewById(R.id.txt_product_count);
+            countLayout = itemView.findViewById(R.id.layout_product_count);
 
             setUpListeners(itemView, onItemClickListener);
         }

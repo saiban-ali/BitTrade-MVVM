@@ -11,16 +11,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.fragments.AddProductImagesFragment;
 import com.fyp.bittrade.fragments.CartFragment;
+import com.fyp.bittrade.fragments.CheckoutFragment;
 import com.fyp.bittrade.fragments.ExploreFragment;
 import com.fyp.bittrade.fragments.FavoritesFragment;
+import com.fyp.bittrade.fragments.PaymentFragment;
 import com.fyp.bittrade.fragments.ProductDetailFragment;
 import com.fyp.bittrade.fragments.ProfileFragment;
 import com.fyp.bittrade.fragments.SellFragment;
@@ -34,8 +36,6 @@ import com.fyp.bittrade.utils.PreferenceUtil;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-
-import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity implements IFragmentCallBack {
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
-        if(fragment instanceof AddProductImagesFragment) {
+        if (fragment instanceof AddProductImagesFragment || fragment instanceof CheckoutFragment || fragment instanceof PaymentFragment) {
             fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
@@ -231,7 +231,30 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
     }
 
     @Override
+    public void loadCheckoutFragment() {
+        loadFragment(new CheckoutFragment());
+        hideBottomNavigation();
+    }
+
+    @Override
+    public void loadPaymentFragment(String url) {
+        Fragment fragment = new PaymentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("url", url);
+
+        fragment.setArguments(bundle);
+
+        loadFragment(fragment);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

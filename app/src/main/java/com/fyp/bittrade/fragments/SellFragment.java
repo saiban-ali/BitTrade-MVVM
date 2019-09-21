@@ -3,6 +3,7 @@ package com.fyp.bittrade.fragments;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -54,6 +55,7 @@ public class SellFragment extends Fragment {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle("Add Product Details");
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         init(view);
 

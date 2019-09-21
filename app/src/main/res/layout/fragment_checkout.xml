@@ -1,14 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CheckoutFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.CheckoutFragment"
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:paddingBottom="8dp">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="0dp"
+        android:background="#fff"
+        app:title="Checkout"
+        app:titleTextColor="@color/colorPrimary" />
+
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery Details"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/calibri_regular"
+        android:textSize="18sp"
+        android:layout_margin="16dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_address"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_edit_address"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/txt_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/calibri_regular"/>
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="H#17, Captain Jamal Road, Sanda"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:fontFamily="@font/calibri_regular"/>
+
+            <TextView
+                android:id="@+id/city_zip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lahore, 54000"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:fontFamily="@font/calibri_regular"/>
+
+            <TextView
+                android:id="@+id/country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pakistan"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:fontFamily="@font/calibri_regular"/>
+
+            <TextView
+                android:id="@+id/txt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone"
+                android:layout_marginTop="4dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/calibri_regular"/>
+
+            <TextView
+                android:id="@+id/phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="03200409665"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:fontFamily="@font/calibri_regular"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_edit_address"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@drawable/checkout_button_backgeound"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Edit"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:fontFamily="@font/calibri_bold"
+            android:elevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Order"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/calibri_regular"
+        android:textSize="18sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_checkout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"
+        tools:itemCount="5"
+        tools:listitem="@layout/cardview_cart" />
 
-</FrameLayout>
+</LinearLayout>

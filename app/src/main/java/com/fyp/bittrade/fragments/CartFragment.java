@@ -102,7 +102,7 @@ public class CartFragment extends Fragment {
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                fragmentCallBack.loadCheckoutFragment();
             }
         });
     }
@@ -247,7 +247,7 @@ public class CartFragment extends Fragment {
         priceTextView = view.findViewById(R.id.txt_total_price);
 
         recyclerView = view.findViewById(R.id.recyclerview_cart);
-        cartProductsAdapter = new CartProductsAdapter(context);
+        cartProductsAdapter = new CartProductsAdapter(context, false);
         gridLayoutManager = new GridLayoutManager(context, 1);
         checkoutButton = view.findViewById(R.id.btn_checkout);
 
@@ -255,7 +255,7 @@ public class CartFragment extends Fragment {
         productsViewModel = ViewModelProviders.of(getActivity()).get(ProductsViewModel.class);
     }
 
-    public void setUpToolbar(View view) {
+    private void setUpToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.cart);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));

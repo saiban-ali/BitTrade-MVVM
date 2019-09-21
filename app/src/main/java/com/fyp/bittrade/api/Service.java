@@ -1,6 +1,7 @@
 package com.fyp.bittrade.api;
 
 import com.fyp.bittrade.models.CartListResponse;
+import com.fyp.bittrade.models.CheckoutResponse;
 import com.fyp.bittrade.models.Contact;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.models.ProductsResponse;
@@ -29,7 +30,7 @@ import retrofit2.http.Query;
 public interface Service {
 
 //    String BASE_URL = "https://bittradeapi.azurewebsites.net/api/";
-    String BASE_URL = "http://192.168.10.13:3000/api/";
+    String BASE_URL = "http://192.168.10.11:3000/api/";
 //    String BASE_URL = "https://crucial-strata-250709.appspot.com/api/";
 //    String BASE_URL = "https://bittrade-252909.appspot.com/api/";
 //    @GET("products")
@@ -73,4 +74,7 @@ public interface Service {
             @PartMap Map<String, RequestBody> partMap,
             @Part List<MultipartBody.Part> productimages
     );
+
+    @GET("checkout/{userId}")
+    Call<CheckoutResponse> checkout(@Path("userId") String userId);
 }

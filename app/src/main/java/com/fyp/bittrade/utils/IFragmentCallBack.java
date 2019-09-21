@@ -9,4 +9,7 @@ public interface IFragmentCallBack {
     void logout();
     void loadAddProductImagesFragment(Product product);
     void loadExploreFragment();
+    void loadCheckoutFragment();
+
+    void loadPaymentFragment(String url);
 }
