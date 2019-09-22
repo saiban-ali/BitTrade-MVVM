@@ -2,10 +2,12 @@ package com.fyp.bittrade.fragments;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -22,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fyp.bittrade.R;
@@ -30,6 +33,7 @@ import com.fyp.bittrade.adapters.ExploreProductsAdapter;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.repositories.CartRepository;
 import com.fyp.bittrade.utils.IFragmentCallBack;
+import com.fyp.bittrade.utils.IResponseCallBack;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 import com.fyp.bittrade.viewmodels.ProductsViewModel;
@@ -38,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 public class ExploreFragment extends Fragment {
 
@@ -50,6 +55,7 @@ public class ExploreFragment extends Fragment {
     private ExploreProductsAdapter exploreProductsAdapter;
     private GridLayoutManager gridLayoutManager;
     private RelativeLayout errorLayout;
+    private TextView categorySeeAll;
 
 //    private ProductsDataSource productsRepository;
     private ProductsViewModel productsViewModel;
@@ -92,11 +98,39 @@ public class ExploreFragment extends Fragment {
         init(view);
         setUpToolBar(view);
 
+        setUpListeners();
+
         setUpRecyclerView();
 
         setUpProductsObserver();
 
         return view;
+    }
+
+    private void setUpListeners() {
+        categorySeeAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCategoryDialog();
+            }
+        });
+    }
+
+    private void showCategoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Select a Category");
+
+        final String[] categories = getActivity().getResources().getStringArray(R.array.categories);
+
+        builder.setItems(categories, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                fragmentCallBack.loadSearchFragment(categories[which]);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void setUpProductsObserver() {
@@ -177,17 +211,65 @@ public class ExploreFragment extends Fragment {
 
         exploreProductsAdapter.setOnItemClickListener(new ExploreProductsAdapter.OnItemClickListener() {
             @Override
-            public void onAddToFavoritesClick(int position, View v, View itemView) {
+            public void onAddToFavoritesClick(int position, final View v, final View itemView) {
+                Toast.makeText(context, "Add favorite clicked", Toast.LENGTH_SHORT).show();
                 v.setVisibility(View.GONE);
                 itemView.findViewById(R.id.favorites_icon_fill).setVisibility(View.VISIBLE);
-                favoritesViewModel.add(exploreProductsAdapter.getProduct(position));
+                favoritesViewModel.add(
+                        exploreProductsAdapter.getProduct(position),
+                        ((MainActivity) getActivity()).getUser().getId(),
+                        new IResponseCallBack() {
+                            @Override
+                            public void onResponseSuccessful(Response response) {
+                                Toast.makeText(context, "Added to favorites", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onResponseUnsuccessful(Response responseBody) {
+                                Toast.makeText(context, "Not Added to favorite, Something went wrong", Toast.LENGTH_SHORT).show();
+                                v.setVisibility(View.VISIBLE);
+                                itemView.findViewById(R.id.favorites_icon_fill).setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onCallFailed(String message) {
+                                Toast.makeText(context, "Call failed: " + message, Toast.LENGTH_SHORT).show();
+                                v.setVisibility(View.VISIBLE);
+                                itemView.findViewById(R.id.favorites_icon_fill).setVisibility(View.GONE);
+                            }
+                        }
+                );
             }
 
             @Override
-            public void onRemoveFromFavoritesClick(int position, View v, View itemView) {
+            public void onRemoveFromFavoritesClick(int position, final View v, final View itemView) {
+                Toast.makeText(context, "remove favorite clicked", Toast.LENGTH_SHORT).show();
                 v.setVisibility(View.GONE);
                 itemView.findViewById(R.id.favorites_icon).setVisibility(View.VISIBLE);
-                favoritesViewModel.remove(exploreProductsAdapter.getProduct(position));
+                favoritesViewModel.remove(
+                        exploreProductsAdapter.getProduct(position),
+                        ((MainActivity) getActivity()).getUser().getId(),
+                        new IResponseCallBack() {
+                            @Override
+                            public void onResponseSuccessful(Response response) {
+                                Toast.makeText(context, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onResponseUnsuccessful(Response responseBody) {
+                                Toast.makeText(context, "Not Removed from favorites,  Something went wrong", Toast.LENGTH_SHORT).show();
+                                v.setVisibility(View.VISIBLE);
+                                itemView.findViewById(R.id.favorites_icon).setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onCallFailed(String message) {
+                                Toast.makeText(context, "Call failed: " + message, Toast.LENGTH_SHORT).show();
+                                v.setVisibility(View.VISIBLE);
+                                itemView.findViewById(R.id.favorites_icon).setVisibility(View.GONE);
+                            }
+                        }
+                );
             }
 
             @Override
@@ -273,6 +355,9 @@ public class ExploreFragment extends Fragment {
         recyclerView = container.findViewById(R.id.recycler_view_products_main);
         gridLayoutManager = new GridLayoutManager(context, 2);
         exploreProductsAdapter = new ExploreProductsAdapter(context, favoritesViewModel.getList(), cartViewModel.getList());
+
+        categorySeeAll = container.findViewById(R.id.txt_see_all);
+
 //        productsRepository = ProductsDataSource.getInstance();
 //        errorLayout = container.findViewById(R.id.layout_error);
     }
@@ -292,6 +377,10 @@ public class ExploreFragment extends Fragment {
 
             case R.id.refresh:
                 productsViewModel.refreshList();
+                return true;
+
+            case R.id.app_bar_search:
+                fragmentCallBack.loadSearchFragment(null);
                 return true;
 
             default:

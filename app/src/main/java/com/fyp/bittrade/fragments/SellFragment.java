@@ -1,8 +1,10 @@
 package com.fyp.bittrade.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -17,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.fyp.bittrade.R;
+import com.fyp.bittrade.activities.MainActivity;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.utils.IFragmentCallBack;
 
@@ -69,6 +72,21 @@ public class SellFragment extends Fragment {
                 Product product = new Product();
 
                 if (validateFields()) {
+
+                    if (!((MainActivity) getActivity()).getUser().isPaymentMethodAvailable()) {
+//                        new AlertDialog.Builder(getActivity())
+//                                .setTitle("")
+//                                .setMessage("Please add payment method first")
+//                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//
+//                                    }
+//                                })
+//                                .show();
+//                        return;
+                    }
+
                     product.setTitle(title.getText().toString());
                     product.setDescription(description.getText().toString());
                     product.setPrice(Double.parseDouble(price.getText().toString()));

@@ -25,6 +25,7 @@ import com.fyp.bittrade.fragments.FavoritesFragment;
 import com.fyp.bittrade.fragments.PaymentFragment;
 import com.fyp.bittrade.fragments.ProductDetailFragment;
 import com.fyp.bittrade.fragments.ProfileFragment;
+import com.fyp.bittrade.fragments.SearchFragment;
 import com.fyp.bittrade.fragments.SellFragment;
 import com.fyp.bittrade.models.CartListResponse;
 import com.fyp.bittrade.models.Contact;
@@ -32,10 +33,14 @@ import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.models.User;
 import com.fyp.bittrade.repositories.CartRepository;
 import com.fyp.bittrade.utils.IFragmentCallBack;
+import com.fyp.bittrade.utils.IResponseCallBack;
 import com.fyp.bittrade.utils.PreferenceUtil;
 import com.fyp.bittrade.viewmodels.CartViewModel;
+import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements IFragmentCallBack {
 
@@ -80,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
     }
 
     private CartViewModel cartViewModel;
+    private FavoritesViewModel favoritesViewModel;
 
     private boolean loggedIn = false;
 
@@ -94,7 +100,12 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
-        if (fragment instanceof AddProductImagesFragment || fragment instanceof CheckoutFragment || fragment instanceof PaymentFragment) {
+        if (
+                fragment instanceof AddProductImagesFragment
+                        || fragment instanceof CheckoutFragment
+                        || fragment instanceof PaymentFragment
+                || fragment instanceof SearchFragment
+        ) {
             fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
@@ -113,23 +124,42 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         }
 
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+
         CartRepository cartRepository = CartRepository.getInstance();
         cartRepository.getCart(user.getId(), new CartRepository.ICartListResponseCallBack() {
             @Override
             public void onResponseSuccessful(CartListResponse response) {
-                Toast.makeText(MainActivity.this, "ResponseSuccessful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "CartResponseSuccessful", Toast.LENGTH_SHORT).show();
                 cartViewModel.setList(response.getProductList());
                 cartViewModel.setPriceLiveData(response.getTotalPrice());
             }
 
             @Override
             public void onResponseUnsuccessful(CartListResponse responseBody) {
-                Toast.makeText(MainActivity.this, "ResponseNotSuccessful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "CartResponseNotSuccessful", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCallFailed(String message) {
-                Toast.makeText(MainActivity.this, "CallFailed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "CartCallFailed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        favoritesViewModel.loadFavoritesList(user.getId(), new IResponseCallBack() {
+            @Override
+            public void onResponseSuccessful(Response response) {
+                Toast.makeText(MainActivity.this, "FavoritesResponseSuccessful", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponseUnsuccessful(Response responseBody) {
+                Toast.makeText(MainActivity.this, "FavoritesResponseNotsuccessful", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCallFailed(String message) {
+                Toast.makeText(MainActivity.this, "Favorites Call Failed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -245,6 +275,18 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         fragment.setArguments(bundle);
 
         loadFragment(fragment);
+    }
+
+    @Override
+    public void loadSearchFragment(String searchId) {
+        Fragment fragment = new SearchFragment();
+        Bundle bundle = new Bundle();
+        if (searchId != null) {
+            bundle.putString("searchId", searchId);
+        }
+        fragment.setArguments(bundle);
+        loadFragment(fragment);
+        hideBottomNavigation();
     }
 
     @Override

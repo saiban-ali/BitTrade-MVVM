@@ -6,16 +6,10 @@
     tools:context=".fragments.PaymentFragment"
     android:background="@android:color/background_light">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
-
 
     <WebView
         android:id="@+id/webview_payment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"/>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

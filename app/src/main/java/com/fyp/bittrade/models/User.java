@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class User implements Parcelable {
 
     /**
@@ -96,12 +94,36 @@ public class User implements Parcelable {
         password = in.readString();
         profileImageUrl = in.readString();
         phoneNumber = in.readString();
+        contact = in.readParcelable(Contact.class.getClassLoader());
         isPaymentMethodAvailable = in.readByte() != 0;
         isPhoneVarified = in.readByte() != 0;
         isAddressAvailable = in.readByte() != 0;
         isEmailVarified = in.readByte() != 0;
         createdAt = in.readString();
         updatedAt = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(profileImageUrl);
+        dest.writeString(phoneNumber);
+        dest.writeParcelable(contact, flags);
+        dest.writeByte((byte) (isPaymentMethodAvailable ? 1 : 0));
+        dest.writeByte((byte) (isPhoneVarified ? 1 : 0));
+        dest.writeByte((byte) (isAddressAvailable ? 1 : 0));
+        dest.writeByte((byte) (isEmailVarified ? 1 : 0));
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -192,25 +214,5 @@ public class User implements Parcelable {
         this.profileImageUrl = profileImageUrl;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(email);
-        dest.writeString(password);
-        dest.writeString(profileImageUrl);
-        dest.writeString(phoneNumber);
-        dest.writeByte((byte) (isPaymentMethodAvailable ? 1 : 0));
-        dest.writeByte((byte) (isPhoneVarified ? 1 : 0));
-        dest.writeByte((byte) (isAddressAvailable ? 1 : 0));
-        dest.writeByte((byte) (isEmailVarified ? 1 : 0));
-        dest.writeString(createdAt);
-        dest.writeString(updatedAt);
-    }
 }

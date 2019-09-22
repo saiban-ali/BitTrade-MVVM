@@ -71,7 +71,8 @@
                     android:layout_height="@dimen/img_progress_height"
                     android:layout_gravity="center"
                     android:indeterminate="true"
-                    android:indeterminateTint="@color/colorPrimary" />
+                    android:indeterminateTint="@color/colorPrimary"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/txt_no_image"

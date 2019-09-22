@@ -15,6 +15,12 @@ public class ProductsResponse {
     @SerializedName("pages")
     private int totalPages;
 
+    @SerializedName("success")
+    private boolean isSuccess;
+
+    @SerializedName("message")
+    private String message;
+
     public ProductsResponse(List<Product> productList, int currentPageNumber, int totalPages) {
         this.productList = productList;
         this.currentPageNumber = currentPageNumber;

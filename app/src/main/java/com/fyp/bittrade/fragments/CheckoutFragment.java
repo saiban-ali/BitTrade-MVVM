@@ -49,6 +49,7 @@ public class CheckoutFragment extends Fragment {
     private Button editAddress;
 
     private IFragmentCallBack fragmentCallBack;
+    private Button proceedPaymentButton;
 
     @Override
     public void onAttach(Context context) {
@@ -85,7 +86,7 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void setUpClickListeners() {
-        editAddress.setOnClickListener(new View.OnClickListener() {
+        proceedPaymentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getPaymentUrl();
@@ -132,6 +133,7 @@ public class CheckoutFragment extends Fragment {
         country = view.findViewById(R.id.country);
         phone = view.findViewById(R.id.phone_number);
         editAddress = view.findViewById(R.id.btn_edit_address);
+        proceedPaymentButton = view.findViewById(R.id.btn_proceed_to_payment);
     }
 
     private void setUpCartList(View view) {

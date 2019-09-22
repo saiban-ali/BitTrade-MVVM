@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.models.Product;
@@ -82,32 +84,36 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
         String[] imageUrls = getItem(position).getImages();
 
         if (imageUrls.length == Product.HAS_NO_IMAGE_URL) {
-            holder.progressBar.setVisibility(View.GONE);
+//            holder.progressBar.setVisibility(View.GONE);
             holder.productImage.setImageResource(R.drawable.ic_logo_light);
             holder.noImageText.setVisibility(View.VISIBLE);
         } else {
+            RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(context)
                     .load(getItem(position).getImages()[0])
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            Log.e(TAG, "onLoadFailed: GlideException", e);
-
-                            holder.progressBar.setVisibility(View.GONE);
-                            holder.noImageText.setVisibility(View.GONE);
-                            holder.productImage.setImageResource(R.drawable.ic_broken_image_black_24dp);
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            holder.progressBar.setVisibility(View.GONE);
-                            holder.noImageText.setVisibility(View.GONE);
-                            return false;
-                        }
-                    })
+                    .error(R.drawable.ic_broken_image_black_24dp)
+                    .apply(requestOptions)
                     .into(holder.productImage);
         }
+
+//        .listener(new RequestListener<Drawable>() {
+//            @Override
+//            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                Log.e(TAG, "onLoadFailed: GlideException", e);
+//
+//                holder.progressBar.setVisibility(View.GONE);
+//                holder.noImageText.setVisibility(View.GONE);
+//                holder.productImage.setImageResource(R.drawable.ic_broken_image_black_24dp);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                holder.progressBar.setVisibility(View.GONE);
+//                holder.noImageText.setVisibility(View.GONE);
+//                return false;
+//            }
+//        })
 
         if (favoritesList.contains(getItem(position))) {
             holder.addToFavorites.setVisibility(View.GONE);
@@ -144,17 +150,17 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
         this.onItemClickListener = onItemClickListener;
     }
 
-    static class ProductViewHolder extends RecyclerView.ViewHolder {
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView productImage;
-        private TextView titleText;
-        private TextView brandText;
-        private TextView priceText;
-        private ProgressBar progressBar;
-        private TextView noImageText;
-        private ImageView addToFavorites;
-        private ImageView removeFromFavorites;
-        private ImageView addToCart;
+         ImageView productImage;
+         TextView titleText;
+         TextView brandText;
+         TextView priceText;
+//        private ProgressBar progressBar;
+         TextView noImageText;
+         ImageView addToFavorites;
+         ImageView removeFromFavorites;
+         ImageView addToCart;
 
         ProductViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -163,7 +169,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
             titleText = itemView.findViewById(R.id.txt_product_name);
             brandText = itemView.findViewById(R.id.txt_brand_name);
             priceText = itemView.findViewById(R.id.txt_price);
-            progressBar = itemView.findViewById(R.id.cardview_item_progress_bar);
+//            progressBar = itemView.findViewById(R.id.cardview_item_progress_bar);
             noImageText = itemView.findViewById(R.id.txt_no_image);
             addToFavorites = itemView.findViewById(R.id.favorites_icon);
             removeFromFavorites = itemView.findViewById(R.id.favorites_icon_fill);

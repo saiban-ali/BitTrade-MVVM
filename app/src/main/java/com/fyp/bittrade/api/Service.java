@@ -1,5 +1,7 @@
 package com.fyp.bittrade.api;
 
+import androidx.core.provider.FontsContractCompat;
+
 import com.fyp.bittrade.models.CartListResponse;
 import com.fyp.bittrade.models.CheckoutResponse;
 import com.fyp.bittrade.models.Contact;
@@ -77,4 +79,16 @@ public interface Service {
 
     @GET("checkout/{userId}")
     Call<CheckoutResponse> checkout(@Path("userId") String userId);
+
+    @GET("products/favorite/{userId}")
+    Call<ProductsResponse> getFavorites(@Path("userId") String userId);
+
+    @POST("products/favorite/{userId}/{productId}")
+    Call<ResponseBody> addToFavorite(@Path("userId") String userId, @Path("productId") String productId);
+
+    @DELETE("products/favorite/{userId}/{productId}")
+    Call<ResponseBody> removeFromFavorites(@Path("userId") String userId, @Path("productId") String productId);
+
+    @GET("products/search")
+    Call<ProductsResponse> search(@Query("keyword") String keyword, @Query("is_category") boolean isCategory);
 }

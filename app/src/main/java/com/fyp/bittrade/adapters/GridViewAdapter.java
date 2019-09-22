@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.fyp.bittrade.R;
 
 import java.util.ArrayList;
@@ -56,7 +57,11 @@ public class GridViewAdapter extends BaseAdapter {
         }
 
         ImageView imageView = convertView.findViewById(R.id.grid_image_view);
-        imageView.setImageBitmap(imagesList.get(position));
+//        imageView.setImageBitmap(imagesList.get(position));
+
+        Glide.with(context)
+                .load(imagesList.get(position))
+                .into(imageView);
 
         return convertView;
     }

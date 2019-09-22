@@ -106,7 +106,7 @@ public class FavoritesFragment extends Fragment {
         favoriteProductsAdapter.setOnItemClickListener(new FavoriteProductsAdapter.OnItemClickListener() {
             @Override
             public void onRemoveIconClick(int position, View view) {
-                favoritesViewModel.remove(favoriteProductsAdapter.getProduct(position));
+//                favoritesViewModel.remove(favoriteProductsAdapter.getProduct(position));
             }
 
             @Override

@@ -183,11 +183,11 @@ public class ProductDetailFragment extends Fragment {
     }
 
     private void removeFromFavorite() {
-        favoritesViewModel.remove(product);
+//        favoritesViewModel.remove(product);
     }
 
     private void addToFavorites() {
-        favoritesViewModel.add(product);
+//        favoritesViewModel.add(product);
     }
 
     private void init(View view) {
