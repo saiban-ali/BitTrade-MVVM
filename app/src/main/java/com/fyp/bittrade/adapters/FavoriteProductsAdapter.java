@@ -77,7 +77,11 @@ public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProduc
                     .into(favoritesRecyclerViewHolder.product_image);
         }
         favoritesRecyclerViewHolder.product_title.setText(favoritesList.get(i).getTitle());
-        favoritesRecyclerViewHolder.product_brand.setText("Brand");
+        favoritesRecyclerViewHolder.product_brand.setText(
+                (favoritesList.get(i).getBrand() == null || favoritesList.get(i).getBrand().isEmpty()) ?
+                        "No brand" :
+                        favoritesList.get(i).getBrand()
+        );
         favoritesRecyclerViewHolder.product_price.setText(String.format("$%.2f", favoritesList.get(i).getPrice()));
     }
 
@@ -105,7 +109,7 @@ public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProduc
     }
 
     public interface OnItemClickListener {
-        void onRemoveIconClick(int position, View view);
+        void onRemoveIconClick(int position, View view, View itemView);
 
         void onItemClick(int position, View v);
     }
@@ -155,7 +159,7 @@ public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProduc
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onRemoveIconClick(position, v);
+                            listener.onRemoveIconClick(position, v, itemView);
                         }
                     }
                 }

@@ -33,6 +33,7 @@ public class ProductsViewModel extends ViewModel {
     }
 
     public void refreshList() {
-        productsDataSourceFactory.getData().getValue().invalidate();
+        if (productsDataSourceFactory.getData().getValue() != null)
+            productsDataSourceFactory.getData().getValue().invalidate();
     }
 }

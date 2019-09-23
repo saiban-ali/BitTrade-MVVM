@@ -23,6 +23,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +66,13 @@ public class ExploreFragment extends Fragment {
 
     private IFragmentCallBack fragmentCallBack;
 
+    private LinearLayout categoryMen;
+    private LinearLayout categoryWomen;
+    private LinearLayout categoryElectronics;
+    private LinearLayout categoryGadgets;
+    private LinearLayout categoryGaming;
+    private ProgressBar progressBar;
+
 //    private boolean hasNextPage = false;
 //    private boolean isLastPage = false;
 
@@ -98,6 +107,8 @@ public class ExploreFragment extends Fragment {
         init(view);
         setUpToolBar(view);
 
+        progressBar.setVisibility(View.VISIBLE);
+
         setUpListeners();
 
         setUpRecyclerView();
@@ -112,6 +123,37 @@ public class ExploreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showCategoryDialog();
+            }
+        });
+
+        categoryMen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentCallBack.loadSearchFragment("Men's Fashion");
+            }
+        });
+        categoryWomen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentCallBack.loadSearchFragment("Women's Fashion");
+            }
+        });
+        categoryElectronics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentCallBack.loadSearchFragment("Electronics Devices");
+            }
+        });
+        categoryGadgets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentCallBack.loadSearchFragment("Gadgets");
+            }
+        });
+        categoryGaming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentCallBack.loadSearchFragment("Gaming");
             }
         });
     }
@@ -138,6 +180,7 @@ public class ExploreFragment extends Fragment {
         productsViewModel.getPagedListLiveData().observe(getViewLifecycleOwner(), new Observer<PagedList<Product>>() {
             @Override
             public void onChanged(PagedList<Product> products) {
+                progressBar.setVisibility(View.GONE);
                 exploreProductsAdapter.submitList(products);
             }
         });
@@ -145,14 +188,16 @@ public class ExploreFragment extends Fragment {
         favoritesViewModel.getMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
             @Override
             public void onChanged(List<Product> products) {
-
+//                exploreProductsAdapter.notifyDataSetChanged();
+                exploreProductsAdapter.submitFavoritesList(favoritesViewModel.getList());
             }
         });
 
         cartViewModel.getMutableLiveData().observe(getViewLifecycleOwner(), new Observer<List<Product>>() {
             @Override
             public void onChanged(List<Product> products) {
-
+//                exploreProductsAdapter.notifyDataSetChanged();
+                exploreProductsAdapter.submitCartList(cartViewModel.getList());
             }
         });
 
@@ -278,7 +323,7 @@ public class ExploreFragment extends Fragment {
             }
 
             @Override
-            public void onAddToCartClick(int position, View v, View itemView) {
+            public void onAddToCartClick(int position, final View v, final View itemView) {
 //                v.setVisibility(View.GONE);
 
                 Product p = exploreProductsAdapter.getProduct(position);
@@ -287,6 +332,9 @@ public class ExploreFragment extends Fragment {
                     Toast.makeText(context, "Already in Cart", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                v.setVisibility(View.GONE);
+                itemView.findViewById(R.id.added_to_cart).setVisibility(View.VISIBLE);
 
                 cartViewModel.add(
                         exploreProductsAdapter.getProduct(position),
@@ -300,11 +348,52 @@ public class ExploreFragment extends Fragment {
                             @Override
                             public void onResponseUnsuccessful(ResponseBody responseBody) {
                                 Toast.makeText(context, "Response Unsuccessful", Toast.LENGTH_SHORT).show();
+                                v.setVisibility(View.VISIBLE);
+                                itemView.findViewById(R.id.added_to_cart).setVisibility(View.GONE);
                             }
 
                             @Override
                             public void onCallFailed(String message) {
                                 Toast.makeText(context, "Call Failed", Toast.LENGTH_SHORT).show();
+                                v.setVisibility(View.VISIBLE);
+                                itemView.findViewById(R.id.added_to_cart).setVisibility(View.GONE);
+                            }
+                        });
+            }
+
+            @Override
+            public void onRemoveFromCartClick(int position, final View v, final View itemView) {
+                Product p = exploreProductsAdapter.getProduct(position);
+
+                if (!cartViewModel.hasProduct(p)) {
+                    Toast.makeText(context, "Not in Cart", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                v.setVisibility(View.GONE);
+                itemView.findViewById(R.id.add_to_cart_icon).setVisibility(View.VISIBLE);
+
+                cartViewModel.remove(
+                        exploreProductsAdapter.getProduct(position),
+                        ((MainActivity) getActivity()).getUser().getId(),
+                        new CartRepository.IResponseAddCartCallBack() {
+                            @Override
+                            public void onResponseSuccessful(ResponseBody response) {
+                                Toast.makeText(context, "removed from cart", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onResponseUnsuccessful(ResponseBody responseBody) {
+                                Toast.makeText(context, "Response Unsuccessful", Toast.LENGTH_SHORT).show();
+                                v.setVisibility(View.VISIBLE);
+                                itemView.findViewById(R.id.add_to_cart_icon).setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onCallFailed(String message) {
+                                Toast.makeText(context, "Call Failed", Toast.LENGTH_SHORT).show();
+                                v.setVisibility(View.VISIBLE);
+                                itemView.findViewById(R.id.add_to_cart_icon).setVisibility(View.GONE);
                             }
                         });
             }
@@ -354,9 +443,16 @@ public class ExploreFragment extends Fragment {
 
         recyclerView = container.findViewById(R.id.recycler_view_products_main);
         gridLayoutManager = new GridLayoutManager(context, 2);
-        exploreProductsAdapter = new ExploreProductsAdapter(context, favoritesViewModel.getList(), cartViewModel.getList());
+        exploreProductsAdapter = new ExploreProductsAdapter(context, favoritesViewModel, cartViewModel);
 
         categorySeeAll = container.findViewById(R.id.txt_see_all);
+        categoryMen = container.findViewById(R.id.layout_cat_man);
+        categoryWomen = container.findViewById(R.id.layout_cat_woman);
+        categoryElectronics = container.findViewById(R.id.layout_cat_electronics);
+        categoryGadgets = container.findViewById(R.id.layout_cat_gadgets);
+        categoryGaming = container.findViewById(R.id.layout_cat_gaming);
+
+        progressBar = container.findViewById(R.id.progress);
 
 //        productsRepository = ProductsDataSource.getInstance();
 //        errorLayout = container.findViewById(R.id.layout_error);

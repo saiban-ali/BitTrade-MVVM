@@ -37,6 +37,7 @@ import com.fyp.bittrade.utils.IResponseCallBack;
 import com.fyp.bittrade.utils.PreferenceUtil;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
+import com.fyp.bittrade.viewmodels.ProductsViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -62,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
                     loadFragment(fragment);
                     return true;
                 case R.id.bottom_nav_sell:
+                    if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof SellFragment) {
+                        return true;
+                    }
                     fragment = new SellFragment();
                     loadFragment(fragment);
                     return true;
@@ -87,7 +91,9 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
     private CartViewModel cartViewModel;
     private FavoritesViewModel favoritesViewModel;
 
-    private boolean loggedIn = false;
+    private boolean isCartReady = false;
+    private boolean isFavoritesReady = false;
+    private boolean readyToRefreash = false;
 
     private void loadFragment(Fragment fragment) {
 
@@ -133,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
                 Toast.makeText(MainActivity.this, "CartResponseSuccessful", Toast.LENGTH_SHORT).show();
                 cartViewModel.setList(response.getProductList());
                 cartViewModel.setPriceLiveData(response.getTotalPrice());
+                isCartReady = true;
+                refreshExplore();
             }
 
             @Override
@@ -150,6 +158,8 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
             @Override
             public void onResponseSuccessful(Response response) {
                 Toast.makeText(MainActivity.this, "FavoritesResponseSuccessful", Toast.LENGTH_SHORT).show();
+                isFavoritesReady = true;
+                refreshExplore();
             }
 
             @Override
@@ -188,6 +198,13 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         }
 
 //        loadFragment(new AddProductImagesFragment());
+    }
+
+    private void refreshExplore() {
+        if (isCartReady && isFavoritesReady) {
+            ProductsViewModel productsViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
+            productsViewModel.refreshList();
+        }
     }
 
     @Override

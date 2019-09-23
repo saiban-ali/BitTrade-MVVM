@@ -22,12 +22,17 @@ import com.fyp.bittrade.activities.MainActivity;
 import com.fyp.bittrade.adapters.ImageSlideAdapter;
 import com.fyp.bittrade.adapters.ImageSliderAdapter;
 import com.fyp.bittrade.models.Product;
+import com.fyp.bittrade.repositories.CartRepository;
 import com.fyp.bittrade.utils.IFragmentCallBack;
+import com.fyp.bittrade.utils.IResponseCallBack;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
+
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 public class ProductDetailFragment extends Fragment {
 
@@ -172,22 +177,117 @@ public class ProductDetailFragment extends Fragment {
                 removeFromCart();
             }
         });
+
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentCallBack.loadCheckoutFragment();
+            }
+        });
     }
 
     private void removeFromCart() {
 //        cartViewModel.remove(product);
+        cartViewModel.remove(
+                product,
+                ((MainActivity) getActivity()).getUser().getId(),
+                new CartRepository.IResponseAddCartCallBack() {
+                    @Override
+                    public void onResponseSuccessful(ResponseBody response) {
+
+                    }
+
+                    @Override
+                    public void onResponseUnsuccessful(ResponseBody responseBody) {
+                        addToCart.setVisibility(View.GONE);
+                        removeFromCart.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onCallFailed(String message) {
+                        addToCart.setVisibility(View.GONE);
+                        removeFromCart.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
     }
 
     private void addToCart() {
 //        cartViewModel.add(product);
+        cartViewModel.add(
+                product,
+                ((MainActivity) getActivity()).getUser().getId(),
+                new CartRepository.IResponseAddCartCallBack() {
+                    @Override
+                    public void onResponseSuccessful(ResponseBody response) {
+
+                    }
+
+                    @Override
+                    public void onResponseUnsuccessful(ResponseBody responseBody) {
+                        addToCart.setVisibility(View.VISIBLE);
+                        removeFromCart.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCallFailed(String message) {
+                        addToCart.setVisibility(View.VISIBLE);
+                        removeFromCart.setVisibility(View.GONE);
+                    }
+                }
+        );
     }
 
     private void removeFromFavorite() {
 //        favoritesViewModel.remove(product);
+        favoritesViewModel.remove(
+                product,
+                ((MainActivity) getActivity()).getUser().getId(),
+                new IResponseCallBack() {
+                    @Override
+                    public void onResponseSuccessful(Response response) {
+
+                    }
+
+                    @Override
+                    public void onResponseUnsuccessful(Response responseBody) {
+                        addToFavorite.setVisibility(View.GONE);
+                        removeFromFavorite.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onCallFailed(String message) {
+                        addToFavorite.setVisibility(View.GONE);
+                        removeFromFavorite.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
     }
 
     private void addToFavorites() {
 //        favoritesViewModel.add(product);
+        favoritesViewModel.add(
+                product,
+                ((MainActivity) getActivity()).getUser().getId(),
+                new IResponseCallBack() {
+                    @Override
+                    public void onResponseSuccessful(Response response) {
+
+                    }
+
+                    @Override
+                    public void onResponseUnsuccessful(Response responseBody) {
+                        addToFavorite.setVisibility(View.VISIBLE);
+                        removeFromFavorite.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCallFailed(String message) {
+                        addToFavorite.setVisibility(View.VISIBLE);
+                        removeFromFavorite.setVisibility(View.GONE);
+                    }
+                }
+        );
     }
 
     private void init(View view) {

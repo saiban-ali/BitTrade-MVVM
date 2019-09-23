@@ -140,7 +140,7 @@ public class CartFragment extends Fragment {
 
         cartProductsAdapter.setOnItemClickListener(new CartProductsAdapter.OnItemClickListener() {
             @Override
-            public void onRemoveClick(int position, View v, View itemView) {
+            public void onRemoveClick(final int position, View v, View itemView) {
                 cartViewModel.remove(cartProductsAdapter.getProduct(position),
                         ((MainActivity) getActivity()).getUser().getId(),
                         new CartRepository.IResponseAddCartCallBack() {

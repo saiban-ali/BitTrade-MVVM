@@ -57,8 +57,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:layout_marginStart="4dp"
-            android:fontFamily="@font/calibri_regular"
-            android:backgroundTint="@android:color/black" />
+            android:fontFamily="@font/calibri_regular" />
 
 
 
@@ -148,28 +147,40 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/ok"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="OK"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
-        android:layout_below="@+id/content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="32dp"/>
+        android:layout_below="@id/content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
 
-    <TextView
-        android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CANCEL"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
-        android:layout_below="@+id/content"
-        android:layout_toStartOf="@+id/ok"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="32dp" />
+        <TextView
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:layout_toStartOf="@+id/ok"
+            android:layout_marginEnd="32dp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -84,6 +84,7 @@
                         android:baselineAligned="false">
 
                         <LinearLayout
+                            android:id="@+id/layout_cat_man"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -122,6 +123,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/layout_cat_woman"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -159,6 +161,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/layout_cat_electronics"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -196,6 +199,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/layout_cat_gadgets"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -232,6 +236,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/layout_cat_gaming"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -317,7 +322,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_products_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
@@ -327,6 +332,13 @@
         tools:itemCount="5"
         tools:listitem="@layout/cardview_item"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
 <!--    <RelativeLayout-->
 <!--        android:id="@+id/layout_error"-->

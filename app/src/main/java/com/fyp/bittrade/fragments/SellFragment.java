@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fyp.bittrade.R;
@@ -23,16 +28,21 @@ import com.fyp.bittrade.activities.MainActivity;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.utils.IFragmentCallBack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SellFragment extends Fragment {
 
     private static final String TAG = SellFragment.class.getName();
 
     private Spinner spinner;
     private EditText title;
+    private EditText brand;
     private EditText stock;
     private EditText price;
     private EditText description;
     private Button nextButton;
+    private TextView descriptionWordCount;
 
     private IFragmentCallBack fragmentCallBack;
 
@@ -88,6 +98,7 @@ public class SellFragment extends Fragment {
                     }
 
                     product.setTitle(title.getText().toString());
+                    product.setBrand(brand.getText().toString());
                     product.setDescription(description.getText().toString());
                     product.setPrice(Double.parseDouble(price.getText().toString()));
                     product.setStock(Integer.parseInt(stock.getText().toString()));
@@ -98,12 +109,34 @@ public class SellFragment extends Fragment {
             }
         });
 
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                descriptionWordCount.setText(Integer.toString(description.getText().toString().length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return view;
     }
 
     private boolean validateFields() {
         if (title.getText().toString().isEmpty()) {
             title.setError("Input Title");
+            return false;
+        }
+
+        if (brand.getText().toString().isEmpty()) {
+            brand.setError("Input Brand Name");
             return false;
         }
 
@@ -128,9 +161,46 @@ public class SellFragment extends Fragment {
     private void init(View view) {
         spinner = view.findViewById(R.id.category);
         title = view.findViewById(R.id.title);
+        brand = view.findViewById(R.id.brand);
         stock = view.findViewById(R.id.stock);
         price = view.findViewById(R.id.price);
         description = view.findViewById(R.id.description);
         nextButton = view.findViewById(R.id.btn_next);
+        descriptionWordCount = view.findViewById(R.id.txt_char_count);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString("title", title.getText().toString());
+        outState.putString("brand", brand.getText().toString());
+        outState.putString("description", description.getText().toString());
+        outState.putString("wordcount", descriptionWordCount.getText().toString());
+        outState.putString("stock", stock.getText().toString());
+        outState.putString("price", price.getText().toString());
+        outState.putString("category", spinner.getSelectedItem().toString());
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            title.setText(savedInstanceState.getString("title"));
+            brand.setText(savedInstanceState.getString("brand"));
+            description.setText(savedInstanceState.getString("description"));
+            descriptionWordCount.setText(savedInstanceState.getString("wordcount"));
+            stock.setText(savedInstanceState.getString("stock"));
+            price.setText(savedInstanceState.getString("price"));
+
+            String[] categories = getActivity().getResources().getStringArray(R.array.categories);
+
+            for (int i = 0; i <categories.length; i++) {
+                if (categories[i].equals(savedInstanceState.getString("category"))) {
+                    spinner.setSelection(i);
+                }
+            }
+        }
     }
 }

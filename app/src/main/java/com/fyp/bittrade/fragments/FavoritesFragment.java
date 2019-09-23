@@ -19,15 +19,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.fyp.bittrade.R;
+import com.fyp.bittrade.activities.MainActivity;
 import com.fyp.bittrade.adapters.FavoriteProductsAdapter;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.utils.IFragmentCallBack;
+import com.fyp.bittrade.utils.IResponseCallBack;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Response;
 
 public class FavoritesFragment extends Fragment {
 
@@ -105,8 +109,31 @@ public class FavoritesFragment extends Fragment {
 
         favoriteProductsAdapter.setOnItemClickListener(new FavoriteProductsAdapter.OnItemClickListener() {
             @Override
-            public void onRemoveIconClick(int position, View view) {
+            public void onRemoveIconClick(int position, View view, View itemView) {
 //                favoritesViewModel.remove(favoriteProductsAdapter.getProduct(position));
+
+                Toast.makeText(context, "remove favorite clicked", Toast.LENGTH_SHORT).show();
+                favoritesViewModel.remove(
+                        favoriteProductsAdapter.getProduct(position),
+                        ((MainActivity) getActivity()).getUser().getId(),
+                        new IResponseCallBack() {
+                            @Override
+                            public void onResponseSuccessful(Response response) {
+                                Toast.makeText(context, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onResponseUnsuccessful(Response responseBody) {
+                                Toast.makeText(context, "Not Removed from favorites,  Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onCallFailed(String message) {
+                                Toast.makeText(context, "Call failed: " + message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+
             }
 
             @Override

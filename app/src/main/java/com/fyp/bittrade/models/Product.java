@@ -37,6 +37,9 @@ public class Product implements Parcelable {
     @SerializedName("category")
     private String category;
 
+    @SerializedName("brand")
+    private String brand;
+
     public Product() {
     }
 
@@ -49,27 +52,13 @@ public class Product implements Parcelable {
         this.productCount = productCount;
     }
 
-    protected Product(Parcel in) {
-        images = in.createStringArray();
-        title = in.readString();
-        description = in.readString();
-        price = in.readDouble();
-        stock = in.readInt();
-        productCount = in.readInt();
-        category = in.readString();
+    public String getBrand() {
+        return brand;
     }
 
-    public static final Creator<Product> CREATOR = new Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
-        }
-    };
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
     public String getCategory() {
         return category;
@@ -123,22 +112,6 @@ public class Product implements Parcelable {
         this.productCount = productCount;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(images);
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeDouble(price);
-        dest.writeInt(stock);
-        dest.writeInt(productCount);
-        dest.writeString(category);
-    }
-
     public int getProductCount() {
         return productCount;
     }
@@ -150,4 +123,48 @@ public class Product implements Parcelable {
     public void decrementProductCount() {
         productCount--;
     }
+
+
+    protected Product(Parcel in) {
+        id = in.readString();
+        images = in.createStringArray();
+        title = in.readString();
+        description = in.readString();
+        price = in.readDouble();
+        stock = in.readInt();
+        productCount = in.readInt();
+        category = in.readString();
+        brand = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeStringArray(images);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeDouble(price);
+        dest.writeInt(stock);
+        dest.writeInt(productCount);
+        dest.writeString(category);
+        dest.writeString(brand);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
+
 }

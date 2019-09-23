@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ public class ChangeAddressDialog extends DialogFragment {
 
     private TextView buttonOk;
     private TextView buttonCancel;
+    private ProgressBar progressBar;
 
 
     @Override
@@ -74,6 +76,8 @@ public class ChangeAddressDialog extends DialogFragment {
 
         buttonOk = view.findViewById(R.id.ok);
         buttonCancel = view.findViewById(R.id.cancel);
+
+        progressBar = view.findViewById(R.id.progress);
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.countries_array, R.layout.spinner_layout);
         spinner.setPrompt("Select Country");
@@ -119,6 +123,9 @@ public class ChangeAddressDialog extends DialogFragment {
                 }
 
 
+                buttonOk.setVisibility(View.GONE);
+                buttonCancel.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
 
                 Client client = Client.getInstance();
                 Retrofit retrofit = client.getClient();
@@ -144,10 +151,16 @@ public class ChangeAddressDialog extends DialogFragment {
 
                             } else {
                                 Toast.makeText(getActivity(), "Something went wrong! try again", Toast.LENGTH_SHORT).show();
+                                buttonOk.setVisibility(View.VISIBLE);
+                                buttonCancel.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
                             }
 
                         } else {
                             Toast.makeText(getActivity(), "Response Not Successful", Toast.LENGTH_SHORT).show();
+                            buttonOk.setVisibility(View.VISIBLE);
+                            buttonCancel.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
 
@@ -157,6 +170,9 @@ public class ChangeAddressDialog extends DialogFragment {
                         buttonOk.setClickable(true);
 
                         Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_SHORT).show();
+                        buttonOk.setVisibility(View.VISIBLE);
+                        buttonCancel.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
 

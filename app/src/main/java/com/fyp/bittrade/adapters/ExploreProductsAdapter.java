@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.fyp.bittrade.R;
 import com.fyp.bittrade.models.Product;
+import com.fyp.bittrade.viewmodels.CartViewModel;
+import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 
 import java.util.List;
 
@@ -33,6 +37,8 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
     private static final String TAG = ExploreProductsAdapter.class.getName();
     private List<Product> cartList;
     private List<Product> favoritesList;
+    private FavoritesViewModel favoritesViewModel;
+    private CartViewModel cartViewModel;
 
     private Context context;
 
@@ -55,11 +61,13 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
 
     private OnItemClickListener onItemClickListener;
 
-    public ExploreProductsAdapter(Context context, List<Product> favoritesList, List<Product> cartList) {
+    public ExploreProductsAdapter(Context context, FavoritesViewModel favoritesViewModel, CartViewModel cartViewModel) {
         super(DIFF_CALLBACK);
         this.context = context;
-        this.favoritesList = favoritesList;
-        this.cartList = cartList;
+        this.favoritesList = favoritesViewModel.getList();
+        this.cartList = cartViewModel.getList();
+        this.favoritesViewModel = favoritesViewModel;
+        this.cartViewModel = cartViewModel;
     }
 
     @NonNull
@@ -78,20 +86,29 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
     public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
 
         holder.titleText.setText(getItem(position).getTitle());
-        holder.brandText.setText("Brand");
+        holder.brandText.setText(
+                (getItem(position).getBrand() == null || getItem(position).getBrand().isEmpty()) ?
+                        "No brand" :
+                        getItem(position).getBrand()
+        );
         holder.priceText.setText(String.format("$%.2f", getItem(position).getPrice()));
 
         String[] imageUrls = getItem(position).getImages();
 
         if (imageUrls.length == Product.HAS_NO_IMAGE_URL) {
 //            holder.progressBar.setVisibility(View.GONE);
-            holder.productImage.setImageResource(R.drawable.ic_logo_light);
+            Glide.with(context)
+                    .load(R.drawable.ic_logo_light)
+                    .fitCenter()
+                    .into(holder.productImage);
             holder.noImageText.setVisibility(View.VISIBLE);
         } else {
+            holder.noImageText.setVisibility(View.GONE);
             RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(context)
                     .load(getItem(position).getImages()[0])
                     .error(R.drawable.ic_broken_image_black_24dp)
+                    .fitCenter()
                     .apply(requestOptions)
                     .into(holder.productImage);
         }
@@ -115,7 +132,9 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
 //            }
 //        })
 
-        if (favoritesList.contains(getItem(position))) {
+        Product p = getItem(position);
+
+        if (favoritesViewModel.hasProduct(p)) {
             holder.addToFavorites.setVisibility(View.GONE);
             holder.removeFromFavorites.setVisibility(View.VISIBLE);
         } else {
@@ -123,13 +142,61 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
             holder.removeFromFavorites.setVisibility(View.GONE);
         }
 
+        if (cartViewModel.hasProduct(p)) {
+            holder.addToCart.setVisibility(View.GONE);
+            holder.removeFromCart.setVisibility(View.VISIBLE);
+        } else {
+            holder.addToCart.setVisibility(View.VISIBLE);
+            holder.removeFromCart.setVisibility(View.GONE);
+        }
+
+
+//        if (favoritesList.contains(getItem(position))) {
+//            holder.addToFavorites.setVisibility(View.GONE);
+//            holder.removeFromFavorites.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.addToFavorites.setVisibility(View.VISIBLE);
+//            holder.removeFromFavorites.setVisibility(View.GONE);
+//        }
+
+//        for (Product cartProduct :
+//                cartList) {
+//            if (cartProduct.getId().equals(getItem(position).getId())) {
+//                holder.addToCart.setVisibility(View.GONE);
+//                holder.removeFromCart.setVisibility(View.VISIBLE);
+//            } else {
+//                holder.addToCart.setVisibility(View.VISIBLE);
+//                holder.removeFromCart.setVisibility(View.GONE);
+//            }
+//        }
+
 //        if (cartList.contains(getItem(position))) {
 //            holder.addToCart.setVisibility(View.GONE);
-////            holder.removeFromFavorites.setVisibility(View.VISIBLE);
+//            holder.removeFromCart.setVisibility(View.VISIBLE);
 //        } else {
 //            holder.addToCart.setVisibility(View.VISIBLE);
-////            holder.removeFromFavorites.setVisibility(View.GONE);
+//            holder.removeFromCart.setVisibility(View.GONE);
 //        }
+    }
+
+    public void submitFavoritesList(List<Product> favoritesList) {
+        this.favoritesList = favoritesList;
+//        notifyDataSetChanged();
+        for (int i = 0; i < getItemCount(); i++) {
+            if (favoritesList.contains(getItem(i))) {
+                notifyItemChanged(i);
+            }
+        }
+    }
+
+    public void submitCartList(List<Product> cartList) {
+        this.cartList = cartList;
+//        notifyDataSetChanged();
+        for (int i = 0; i < getItemCount(); i++) {
+            if (cartList.contains(getItem(i))) {
+                notifyItemChanged(i);
+            }
+        }
     }
 
     public Product getProduct(int position) {
@@ -144,6 +211,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
         void onRemoveFromFavoritesClick(int position, View v, View itemView);
         void onProductClick(int position, View v, View itemView);
         void onAddToCartClick(int position, View v, View itemView);
+        void onRemoveFromCartClick(int position, View v, View itemView);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -161,6 +229,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
          ImageView addToFavorites;
          ImageView removeFromFavorites;
          ImageView addToCart;
+         ImageView removeFromCart;
 
         ProductViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -174,6 +243,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
             addToFavorites = itemView.findViewById(R.id.favorites_icon);
             removeFromFavorites = itemView.findViewById(R.id.favorites_icon_fill);
             addToCart = itemView.findViewById(R.id.add_to_cart_icon);
+            removeFromCart = itemView.findViewById(R.id.added_to_cart);
 
             setUpClickListeners(itemView, listener);
         }
@@ -222,6 +292,18 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onAddToCartClick(position, v, itemView);
+                        }
+                    }
+                }
+            });
+
+            removeFromCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onRemoveFromCartClick(position, v, itemView);
                         }
                     }
                 }

@@ -143,14 +143,14 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
 //                changeUsernameDialog.show(getFragmentManager(), "ChangeUsernameDialog");
 //            }
 //        });
-        changePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog();
-                changePasswordDialog.setTargetFragment(ProfileFragment.this, 5);
-                changePasswordDialog.show(getFragmentManager(), "ChangePasswordDialog");
-            }
-        });
+//        changePassword.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ChangePasswordDialog changePasswordDialog = new ChangePasswordDialog();
+//                changePasswordDialog.setTargetFragment(ProfileFragment.this, 5);
+//                changePasswordDialog.show(getFragmentManager(), "ChangePasswordDialog");
+//            }
+//        });
 
         editAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,8 +184,8 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
         address = view.findViewById(R.id.address);
         cityZip = view.findViewById(R.id.city_zip);
         country = view.findViewById(R.id.country);
-        editUsername = view.findViewById(R.id.edit_username);
-        changePassword = view.findViewById(R.id.btn_change_password);
+//        editUsername = view.findViewById(R.id.edit_username);
+//        changePassword = view.findViewById(R.id.btn_change_password);
         logout = view.findViewById(R.id.btn_logout);
         changeProfilePicture = view.findViewById(R.id.btn_change_dp);
         imageView = view.findViewById(R.id.profile_image);

@@ -9,6 +9,8 @@ import com.fyp.bittrade.repositories.CartRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
+
 public class CartViewModel extends ViewModel {
 
     private static final String TAG = FavoritesViewModel.class.getName();
@@ -77,14 +79,39 @@ public class CartViewModel extends ViewModel {
         cartRepository.addToCart(p.getId(), userId, responseCart);
     }
 
-    public void remove(Product p, String userId, CartRepository.IResponseAddCartCallBack responseCart) {
+    public void remove(final Product p, String userId, final CartRepository.IResponseAddCartCallBack responseCart) {
         list.remove(p);
         double prePrice = priceLiveData.getValue();
         double newPrice = prePrice - p.getPrice();
         priceLiveData.setValue(newPrice);
         mutableLiveData.setValue(list);
 
-        cartRepository.removeFromCart(p.getId(), userId, responseCart);
+        cartRepository.removeFromCart(p.getId(), userId, new CartRepository.IResponseAddCartCallBack() {
+            @Override
+            public void onResponseSuccessful(ResponseBody response) {
+                responseCart.onResponseSuccessful(response);
+            }
+
+            @Override
+            public void onResponseUnsuccessful(ResponseBody responseBody) {
+                responseCart.onResponseUnsuccessful(responseBody);
+                list.add(p);
+                double prePrice = priceLiveData.getValue();
+                double newPrice = prePrice + p.getPrice();
+                priceLiveData.setValue(newPrice);
+                mutableLiveData.setValue(list);
+            }
+
+            @Override
+            public void onCallFailed(String message) {
+                responseCart.onCallFailed(message);
+                list.add(p);
+                double prePrice = priceLiveData.getValue();
+                double newPrice = prePrice + p.getPrice();
+                priceLiveData.setValue(newPrice);
+                mutableLiveData.setValue(list);
+            }
+        });
     }
 
     public void incrementProductCount(String userId, String productId, int newQty, CartRepository.IResponseAddCartCallBack cartCallBack) {

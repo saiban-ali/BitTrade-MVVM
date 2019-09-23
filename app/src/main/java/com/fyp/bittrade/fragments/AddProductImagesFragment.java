@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fyp.bittrade.R;
@@ -58,6 +59,9 @@ public class AddProductImagesFragment extends Fragment implements IAddProductCal
     private List<Uri> imageUris = new ArrayList<>();
 
     private IFragmentCallBack fragmentCallBack;
+
+    private ProgressBar progressBar;
+    private Button nextButton;
 
     @Override
     public void onAttach(Context context) {
@@ -96,11 +100,17 @@ public class AddProductImagesFragment extends Fragment implements IAddProductCal
             }
         });
 
-        Button nextButton = view.findViewById(R.id.btn_next);
+        progressBar = view.findViewById(R.id.progress);
+
+        nextButton = view.findViewById(R.id.btn_next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Uploading product", Toast.LENGTH_SHORT).show();
+
+                nextButton.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+
                 AddProductsRepository.getInstance(getActivity()).uploadProduct(
                         ((MainActivity) getActivity()).getUser().getId(),
                         product,
@@ -256,16 +266,22 @@ public class AddProductImagesFragment extends Fragment implements IAddProductCal
     @Override
     public void onResponseSuccessful(ResponseBody response) {
         Toast.makeText(getActivity(), "Product Uploaded", Toast.LENGTH_SHORT).show();
+        nextButton.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
         fragmentCallBack.loadExploreFragment();
     }
 
     @Override
     public void onResponseUnsuccessful(ResponseBody responseBody) {
         Toast.makeText(getActivity(), "Something went wrong! try again", Toast.LENGTH_SHORT).show();
+        nextButton.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onCallFailed(String message) {
         Toast.makeText(getActivity(), "Network Error!", Toast.LENGTH_SHORT).show();
+        nextButton.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 }

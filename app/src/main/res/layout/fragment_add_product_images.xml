@@ -36,6 +36,14 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"/>
 
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:visibility="gone"/>
+
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>

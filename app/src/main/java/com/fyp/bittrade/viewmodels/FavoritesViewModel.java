@@ -126,6 +126,12 @@ public class FavoritesViewModel extends ViewModel {
     }
 
     public boolean hasProduct(Product p) {
-        return list.contains(p);
+        for (Product product:
+                list) {
+            if (product.getId().equals(p.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
