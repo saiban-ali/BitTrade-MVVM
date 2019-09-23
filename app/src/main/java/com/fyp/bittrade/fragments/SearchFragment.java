@@ -215,7 +215,9 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onProductClick(int position, View v, View itemView) {
-                fragmentCallBack.onProductClick(productsAdapter.getProduct(position));
+                Product product = productsAdapter.getProduct(position);
+
+                fragmentCallBack.onProductClick(product);
             }
 
             @Override

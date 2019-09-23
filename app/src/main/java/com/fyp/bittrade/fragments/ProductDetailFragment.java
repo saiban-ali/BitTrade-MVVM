@@ -308,6 +308,7 @@ public class ProductDetailFragment extends Fragment {
         removeFromFavorite = view.findViewById(R.id.img_favorite_fill);
         addToCart = view.findViewById(R.id.btn_add_to_cart);
         removeFromCart = view.findViewById(R.id.btn_remove_from_cart);
+        checkout = view.findViewById(R.id.btn_checkout);
 
         favoritesViewModel = ViewModelProviders.of(getActivity()).get(FavoritesViewModel.class);
         cartViewModel = ViewModelProviders.of(getActivity()).get(CartViewModel.class);
