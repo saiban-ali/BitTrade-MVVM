@@ -134,14 +134,58 @@
                 app:layout_constraintStart_toStartOf="@+id/layout_content"
                 app:layout_constraintTop_toBottomOf="@id/txt_product_brand" />
 
+            <TextView
+                android:id="@+id/txt_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category: "
+                android:textSize="16sp"
+                android:textColor="@color/colorText"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@id/txt_product_price"
+                app:layout_constraintTop_toBottomOf="@id/txt_product_price"
+                app:layout_constraintBottom_toTopOf="@id/txt_stock"/>
+
+            <TextView
+                android:id="@+id/txt_product_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category"
+                android:textColor="@color/colorText"
+                app:layout_constraintStart_toEndOf="@id/txt_category"
+                app:layout_constraintTop_toTopOf="@id/txt_category"
+                app:layout_constraintBottom_toBottomOf="@id/txt_category"/>
+
+            <TextView
+                android:id="@+id/txt_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stock: "
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/colorText"
+                app:layout_constraintStart_toStartOf="@id/txt_category"
+                app:layout_constraintTop_toBottomOf="@id/txt_category"
+                app:layout_constraintBottom_toTopOf="@id/layout_description"/>
+
+            <TextView
+                android:id="@+id/txt_product_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stock"
+                android:textColor="@color/colorText"
+                app:layout_constraintStart_toStartOf="@id/txt_product_category"
+                app:layout_constraintTop_toTopOf="@id/txt_stock"
+                app:layout_constraintBottom_toBottomOf="@id/txt_stock"/>
+
             <RelativeLayout
                 android:id="@+id/layout_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/txt_product_price"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/txt_stock"
                 app:layout_constraintStart_toStartOf="@id/layout_content"
                 app:layout_constraintEnd_toEndOf="@id/layout_content">
 
@@ -169,32 +213,32 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/layout_review"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/layout_description"
-                app:layout_constraintStart_toStartOf="@id/layout_content"
-                app:layout_constraintEnd_toEndOf="@id/layout_content">
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/layout_review"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/layout_description"-->
+<!--                app:layout_constraintStart_toStartOf="@id/layout_content"-->
+<!--                app:layout_constraintEnd_toEndOf="@id/layout_content">-->
 
-                <TextView
-                    android:id="@+id/txt_review_heading"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Reviews"
-                    android:textColor="#000"
-                    android:textSize="22sp"
-                    android:fontFamily="@font/calibri_regular"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/txt_review_heading"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Reviews"-->
+<!--                    android:textColor="#000"-->
+<!--                    android:textSize="22sp"-->
+<!--                    android:fontFamily="@font/calibri_regular"/>-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:layout_below="@id/txt_review_heading"/>
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="500dp"-->
+<!--                    android:layout_below="@id/txt_review_heading"/>-->
 
-            </RelativeLayout>
+<!--            </RelativeLayout>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

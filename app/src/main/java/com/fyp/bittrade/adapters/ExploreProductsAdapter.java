@@ -229,7 +229,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
          TextView brandText;
          TextView priceText;
 //        private ProgressBar progressBar;
-         TextView noImageText;
+//         TextView noImageText;
          ImageView addToFavorites;
          ImageView removeFromFavorites;
          ImageView addToCart;
@@ -243,7 +243,7 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
             brandText = itemView.findViewById(R.id.txt_brand_name);
             priceText = itemView.findViewById(R.id.txt_price);
 //            progressBar = itemView.findViewById(R.id.cardview_item_progress_bar);
-            noImageText = itemView.findViewById(R.id.txt_no_image);
+//            noImageText = itemView.findViewById(R.id.txt_no_image);
             addToFavorites = itemView.findViewById(R.id.favorites_icon);
             removeFromFavorites = itemView.findViewById(R.id.favorites_icon_fill);
             addToCart = itemView.findViewById(R.id.add_to_cart_icon);

@@ -67,9 +67,11 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
     private TextView country;
     private ImageView editUsername;
     private Button myOrdersButton;
+    private Button myProductsButton;
     private Button logout;
     private Button changeProfilePicture;
     private Button editAddress;
+    private Button withdraw;
     private CircleImageView imageView;
 
     private Uri imageUri;
@@ -187,6 +189,20 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
                 ((MainActivity) Objects.requireNonNull(getActivity())).loadMyOrdersFragment();
             }
         });
+
+        withdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "must have at least $5 to withdraw", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        myProductsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentCallBack.loadMyProductsFragment();
+            }
+        });
     }
 
     private void init(View view) {
@@ -203,6 +219,8 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
         imageView = view.findViewById(R.id.profile_image);
         editAddress = view.findViewById(R.id.btn_edit_address);
         myOrdersButton = view.findViewById(R.id.btn_orders);
+        myProductsButton = view.findViewById(R.id.btn_my_products);
+        withdraw = view.findViewById(R.id.btn_withdraw);
     }
 
     @Override

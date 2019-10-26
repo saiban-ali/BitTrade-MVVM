@@ -2,7 +2,7 @@ package com.fyp.bittrade.utils;
 
 public class ExploreProgressHandler {
 
-    public static IExploreeProgressCallBack callBack;
+    public static IExploreProgressCallBack callBack;
 
     public static void hideExploreProgress() {
         callBack.hideProgressBar();

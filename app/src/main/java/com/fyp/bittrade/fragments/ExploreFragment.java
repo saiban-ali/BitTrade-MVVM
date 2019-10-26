@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,12 +34,14 @@ import com.fyp.bittrade.adapters.ExploreProductsAdapter;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.repositories.CartRepository;
 import com.fyp.bittrade.utils.ExploreProgressHandler;
-import com.fyp.bittrade.utils.IExploreeProgressCallBack;
+import com.fyp.bittrade.utils.IExploreProgressCallBack;
 import com.fyp.bittrade.utils.IFragmentCallBack;
 import com.fyp.bittrade.utils.IResponseCallBack;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
 import com.fyp.bittrade.viewmodels.ProductsViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-public class ExploreFragment extends Fragment implements IExploreeProgressCallBack {
+public class ExploreFragment extends Fragment implements IExploreProgressCallBack {
 
     private static final String TAG = ExploreFragment.class.getName();
 
@@ -466,8 +467,10 @@ public class ExploreFragment extends Fragment implements IExploreeProgressCallBa
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.top_options_menu, menu);
+        menu.findItem(R.id.refresh).setVisible(true);
+        menu.findItem(R.id.app_bar_search).setVisible(true);
     }
 
     @Override

@@ -34,6 +34,8 @@ import com.fyp.bittrade.utils.IFragmentCallBack;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.fyp.bittrade.viewmodels.ProductsViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -263,8 +265,10 @@ public class CartFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.top_options_menu, menu);
+        menu.findItem(R.id.refresh).setVisible(false);
+        menu.findItem(R.id.app_bar_search).setVisible(false);
     }
 
     @Override

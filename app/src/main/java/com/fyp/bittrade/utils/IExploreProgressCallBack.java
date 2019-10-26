@@ -1,6 +1,6 @@
 package com.fyp.bittrade.utils;
 
-public interface IExploreeProgressCallBack {
+public interface IExploreProgressCallBack {
 
     void hideProgressBar();
 

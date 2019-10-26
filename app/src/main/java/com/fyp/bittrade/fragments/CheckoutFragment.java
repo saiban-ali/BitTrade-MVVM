@@ -2,13 +2,14 @@ package com.fyp.bittrade.fragments;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,13 +28,11 @@ import com.fyp.bittrade.adapters.CartProductsAdapter;
 import com.fyp.bittrade.api.Client;
 import com.fyp.bittrade.api.Service;
 import com.fyp.bittrade.models.CheckoutResponse;
-import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.models.User;
 import com.fyp.bittrade.utils.IFragmentCallBack;
 import com.fyp.bittrade.utils.VerifyPermissions;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -136,6 +135,35 @@ public class CheckoutFragment extends Fragment {
     }
 
     private void setUpDeliveryDetails() {
+        if (user.getContact() == null) {
+            address.setText("");
+            cityZip.setText("");
+            country.setText("");
+
+            phone.setText("");
+
+            AlertDialog.Builder alertDialgBuilder = new AlertDialog.Builder(getActivity());
+            alertDialgBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((MainActivity) Objects.requireNonNull(getActivity())).loadProfileFragment();
+                }
+            })
+            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((MainActivity) Objects.requireNonNull(getActivity())).loadCartFragment();
+                }
+            });
+            alertDialgBuilder.setTitle("Add Address");
+            alertDialgBuilder.setMessage("Please add contact details before checkout");
+            AlertDialog dialog = alertDialgBuilder.create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+            return;
+        }
+
         address.setText(user.getContact().getAddress());
         cityZip.setText(String.format("%s, %s", user.getContact().getCity(), user.getContact().getZip()));
         country.setText(user.getContact().getCountry());

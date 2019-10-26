@@ -58,7 +58,7 @@ public class SearchAdapter extends RecyclerView.Adapter<ExploreProductsAdapter.P
         if (imageUrls.length == Product.HAS_NO_IMAGE_URL) {
 //            holder.progressBar.setVisibility(View.GONE);
             holder.productImage.setImageResource(R.drawable.ic_logo_light);
-            holder.noImageText.setVisibility(View.VISIBLE);
+//            holder.noImageText.setVisibility(View.VISIBLE);
         } else {
             RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(context)

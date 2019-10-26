@@ -9,8 +9,10 @@ import androidx.annotation.NonNull;
 import com.fyp.bittrade.api.Client;
 import com.fyp.bittrade.api.Service;
 import com.fyp.bittrade.models.Product;
+import com.fyp.bittrade.models.ProductsResponse;
 import com.fyp.bittrade.utils.FilePath;
 import com.fyp.bittrade.utils.IAddProductCallBack;
+import com.fyp.bittrade.utils.IResponseCallBack;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class AddProductsRepository {
     private static AddProductsRepository INSTANCE;
     private Context context;
 
-    public AddProductsRepository(Context context) {
+    private AddProductsRepository(Context context) {
         this.context = context;
     }
 

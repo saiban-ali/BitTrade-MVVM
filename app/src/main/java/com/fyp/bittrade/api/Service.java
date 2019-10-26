@@ -93,4 +93,10 @@ public interface Service {
 
     @GET("products/search")
     Call<ProductsResponse> search(@Query("keyword") String keyword, @Query("is_category") boolean isCategory);
+
+    @GET("products/myproducts/{userId}")
+    Call<ProductsResponse> getMyProducts(@Path("userId") String userId);
+
+    @DELETE("products/{userId}/{productId}")
+    Call<ProductsResponse> removeAddedProduct(@Path("productId") String productId, @Path("userId") String userId);
 }

@@ -24,6 +24,7 @@ import com.fyp.bittrade.fragments.CheckoutFragment;
 import com.fyp.bittrade.fragments.ExploreFragment;
 import com.fyp.bittrade.fragments.FavoritesFragment;
 import com.fyp.bittrade.fragments.MyOrdersFragment;
+import com.fyp.bittrade.fragments.MyProductsFragment;
 import com.fyp.bittrade.fragments.PaymentFragment;
 import com.fyp.bittrade.fragments.ProductDetailFragment;
 import com.fyp.bittrade.fragments.ProfileFragment;
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
                 || fragment instanceof SearchFragment
                 || fragment instanceof ProductDetailFragment
                 || fragment instanceof MyOrdersFragment
+                || fragment instanceof MyProductsFragment
         ) {
             fragmentTransaction.addToBackStack(null);
         }
@@ -173,7 +175,9 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
             user.setContact(contact);
         }
 
-        isResourcesReady.setValue(false);
+        setIsResourcesReady(false);
+        setIsFavoritesReady(false);
+        setIsCartReady(false);
 
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
@@ -210,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
 
             @Override
             public void onResponseUnsuccessful(Response responseBody) {
-                Toast.makeText(MainActivity.this, "FavoritesResponseNotsuccessful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "FavoritesResponseNotSuccessful", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -409,6 +413,23 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
     @Override
     public void loadMyOrdersFragment() {
         loadFragment(new MyOrdersFragment());
+    }
+
+    @Override
+    public void loadCartFragment() {
+        loadFragment(new CartFragment());
+    }
+
+    @Override
+    public void loadProfileFragment() {
+        loadFragment(new ProfileFragment());
+        bottomNavigation.getMenu().findItem(R.id.bottom_nav_user).setChecked(true);
+    }
+
+    @Override
+    public void loadMyProductsFragment() {
+        loadFragment(new MyProductsFragment());
+        hideBottomNavigation();
     }
 
     @Override

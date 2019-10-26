@@ -31,6 +31,7 @@ import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
+import java.util.Locale;
 import java.util.Objects;
 
 import okhttp3.ResponseBody;
@@ -47,6 +48,8 @@ public class ProductDetailFragment extends Fragment {
     private TextView brand;
     private TextView price;
     private TextView description;
+    private TextView category;
+    private TextView stock;
     private ImageView addToFavorite;
     private ImageView removeFromFavorite;
     private Button addToCart;
@@ -111,36 +114,18 @@ public class ProductDetailFragment extends Fragment {
     }
 
     private void updateViews() {
-//        Glide.with(getActivity())
-//                .load(product.getImages()[0])
-//                .placeholder(R.drawable.ic_logo_light)
-//                .centerInside()
-//                .into(productImage);
-
         viewPager.setAdapter(imageSliderAdapter);
 
-
-//        ImageSlideAdapter adapter = new ImageSlideAdapter(getActivity());
-//
-//        sliderView.setSliderAdapter(adapter);
-//
-//        sliderView.setIndicatorAnimation(IndicatorAnimations.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
-//        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
-//        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-//        sliderView.setIndicatorSelectedColor(Color.WHITE);
-//        sliderView.setIndicatorUnselectedColor(Color.GRAY);
-//        sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
-//        sliderView.startAutoCycle();
-
         title.setText(product.getTitle());
-        price.setText(String.format("$%.2f", product.getPrice()));
+        price.setText(String.format(Locale.US, "$%.2f", product.getPrice()));
         brand.setText(
                 (product.getBrand() == null || product.getBrand().equals("")) ?
                         "No Brand" :
                         product.getBrand()
         );
         description.setText(product.getDescription());
-
+        category.setText(product.getCategory());
+        stock.setText(String.format(Locale.US, "%d", product.getStock()));
     }
 
     private void setUpClickListeners() {
@@ -318,6 +303,8 @@ public class ProductDetailFragment extends Fragment {
         addToCart = view.findViewById(R.id.btn_add_to_cart);
         removeFromCart = view.findViewById(R.id.btn_remove_from_cart);
         checkout = view.findViewById(R.id.btn_checkout);
+        category = view.findViewById(R.id.txt_product_category);
+        stock = view.findViewById(R.id.txt_product_stock);
 
         favoritesViewModel = ViewModelProviders.of(getActivity()).get(FavoritesViewModel.class);
         cartViewModel = ViewModelProviders.of(getActivity()).get(CartViewModel.class);

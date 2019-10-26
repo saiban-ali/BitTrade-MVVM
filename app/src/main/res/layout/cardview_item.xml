@@ -87,17 +87,17 @@
                     android:indeterminateTint="@color/colorPrimary"
                     android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/txt_no_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_image"
-                    android:textColor="@color/colorTextLight"
-                    android:fontFamily="@font/calibri_regular"
-                    android:textSize="18sp"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:layout_marginBottom="40dp"
-                    android:visibility="gone"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/txt_no_image"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/no_image"-->
+<!--                    android:textColor="@color/colorTextLight"-->
+<!--                    android:fontFamily="@font/calibri_regular"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:layout_gravity="center_horizontal|bottom"-->
+<!--                    android:layout_marginBottom="40dp"-->
+<!--                    android:visibility="gone"/>-->
             </FrameLayout>
 
         </LinearLayout>

@@ -16,4 +16,10 @@ public interface IFragmentCallBack {
     void loadSearchFragment(String searchId);
 
     void loadMyOrdersFragment();
+
+    void loadCartFragment();
+
+    void loadProfileFragment();
+
+    void loadMyProductsFragment();
 }
