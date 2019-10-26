@@ -85,13 +85,17 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
 
+        if (getItem(position) == null) {
+            return;
+        }
+
         holder.titleText.setText(getItem(position).getTitle());
         holder.brandText.setText(
                 (getItem(position).getBrand() == null || getItem(position).getBrand().isEmpty()) ?
                         "No brand" :
                         getItem(position).getBrand()
         );
-        holder.priceText.setText(String.format("$%.2f", getItem(position).getPrice()));
+        holder.priceText.setText(getItem(position).getFormattedPrice());
 
         String[] imageUrls = getItem(position).getImages();
 
@@ -101,9 +105,9 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
                     .load(R.drawable.ic_logo_light)
                     .fitCenter()
                     .into(holder.productImage);
-            holder.noImageText.setVisibility(View.VISIBLE);
+//            holder.noImageText.setVisibility(View.VISIBLE);
         } else {
-            holder.noImageText.setVisibility(View.GONE);
+//            holder.noImageText.setVisibility(View.GONE);
             RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(context)
                     .load(getItem(position).getImages()[0])

@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="saibanali98@gmail.com"
+                android:text="someone@gmail.com"
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/calibri_regular"
                 android:textSize="18sp"
@@ -112,7 +112,7 @@
                     android:id="@+id/txt_pending_cash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="$400"
+                    android:text="$0.00"
                     android:textColor="@android:color/black"
                     android:textSize="22sp"
                     android:fontFamily="@font/calibri_bold"
@@ -179,7 +179,7 @@
                             android:id="@+id/address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="H#17, Captain Jamal Road, Sanda"
+                            android:text=""
                             android:textColor="@android:color/black"
                             android:textSize="14sp"
                             android:fontFamily="@font/calibri_regular"/>
@@ -188,7 +188,7 @@
                             android:id="@+id/city_zip"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Lahore, 54000"
+                            android:text=""
                             android:textColor="@android:color/black"
                             android:textSize="14sp"
                             android:fontFamily="@font/calibri_regular"/>
@@ -197,7 +197,7 @@
                             android:id="@+id/country"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Pakistan"
+                            android:text=""
                             android:textColor="@android:color/black"
                             android:textSize="14sp"
                             android:fontFamily="@font/calibri_regular"/>
@@ -216,7 +216,7 @@
                             android:id="@+id/phone_number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="03200409665"
+                            android:text=""
                             android:textColor="@android:color/black"
                             android:textSize="14sp"
                             android:fontFamily="@font/calibri_regular"/>

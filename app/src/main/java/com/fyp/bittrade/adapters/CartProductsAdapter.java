@@ -53,7 +53,7 @@ public class CartProductsAdapter extends RecyclerView.Adapter<CartProductsAdapte
         }
 
         holder.productTitle.setText(cartList.get(position).getTitle());
-        holder.productPrice.setText(String.format("$%.2f", cartList.get(position).getPrice()));
+        holder.productPrice.setText(cartList.get(position).getFormattedPrice());
         holder.productBrand.setText(
                 (cartList.get(position).getBrand() == null || cartList.get(position).getBrand().isEmpty()) ?
                         "No brand" :

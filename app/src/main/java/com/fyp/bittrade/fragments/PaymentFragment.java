@@ -16,6 +16,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.fyp.bittrade.R;
+import com.fyp.bittrade.activities.MainActivity;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,10 +37,10 @@ public class PaymentFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_payment, container, false);
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle("Payment");
-        toolbar.setTitleTextColor(Color.RED);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        Toolbar toolbar = view.findViewById(R.id.toolbar);
+//        toolbar.setTitle("Payment");
+//        toolbar.setTitleTextColor(Color.RED);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         Bundle bundle = getArguments();
 
@@ -54,6 +57,8 @@ public class PaymentFragment extends Fragment {
         if (url != null) {
             webView.loadUrl(url);
         }
+
+        ((MainActivity) Objects.requireNonNull(getActivity())).hideBottomNavigation();
 
         return view;
     }

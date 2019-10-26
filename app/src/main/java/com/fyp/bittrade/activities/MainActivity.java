@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
@@ -13,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.fyp.bittrade.R;
@@ -22,6 +23,7 @@ import com.fyp.bittrade.fragments.CartFragment;
 import com.fyp.bittrade.fragments.CheckoutFragment;
 import com.fyp.bittrade.fragments.ExploreFragment;
 import com.fyp.bittrade.fragments.FavoritesFragment;
+import com.fyp.bittrade.fragments.MyOrdersFragment;
 import com.fyp.bittrade.fragments.PaymentFragment;
 import com.fyp.bittrade.fragments.ProductDetailFragment;
 import com.fyp.bittrade.fragments.ProfileFragment;
@@ -37,10 +39,13 @@ import com.fyp.bittrade.utils.IResponseCallBack;
 import com.fyp.bittrade.utils.PreferenceUtil;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 import com.fyp.bittrade.viewmodels.FavoritesViewModel;
-import com.fyp.bittrade.viewmodels.ProductsViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.util.List;
+
+import q.rorbin.badgeview.Badge;
+import q.rorbin.badgeview.QBadgeView;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements IFragmentCallBack {
@@ -91,9 +96,33 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
     private CartViewModel cartViewModel;
     private FavoritesViewModel favoritesViewModel;
 
-    private boolean isCartReady = false;
-    private boolean isFavoritesReady = false;
-    private boolean readyToRefreash = false;
+    private MutableLiveData<Boolean> isCartReady = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isFavoritesReady = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isResourcesReady = new MutableLiveData<>();
+
+    public MutableLiveData<Boolean> getIsCartReady() {
+        return isCartReady;
+    }
+
+    public void setIsCartReady(boolean b) {
+        isCartReady.setValue(b);
+    }
+
+    public MutableLiveData<Boolean> getIsFavoritesReady() {
+        return isFavoritesReady;
+    }
+
+    public void setIsFavoritesReady(boolean b) {
+        isFavoritesReady.setValue(b);
+    }
+
+    public MutableLiveData<Boolean> getIsResourcesReady() {
+        return isResourcesReady;
+    }
+
+    public void setIsResourcesReady(boolean b) {
+        isResourcesReady.setValue(b);
+    }
 
     private void loadFragment(Fragment fragment) {
 
@@ -108,13 +137,28 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         if (
                 fragment instanceof AddProductImagesFragment
-                        || fragment instanceof CheckoutFragment
-                        || fragment instanceof PaymentFragment
+                || fragment instanceof PaymentFragment
+                || fragment instanceof CheckoutFragment
                 || fragment instanceof SearchFragment
+                || fragment instanceof ProductDetailFragment
+                || fragment instanceof MyOrdersFragment
         ) {
             fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction.commit();
+
+        if (
+                fragment instanceof PaymentFragment
+                        || fragment instanceof AddProductImagesFragment
+                        || fragment instanceof CheckoutFragment
+                        || fragment instanceof ProductDetailFragment
+                        || fragment instanceof SearchFragment
+                || fragment instanceof MyOrdersFragment
+        ) {
+            hideBottomNavigation();
+        } else {
+            showBottomNavigation();
+        }
     }
 
     @Override
@@ -129,6 +173,8 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
             user.setContact(contact);
         }
 
+        isResourcesReady.setValue(false);
+
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
 
@@ -139,8 +185,8 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
                 Toast.makeText(MainActivity.this, "CartResponseSuccessful", Toast.LENGTH_SHORT).show();
                 cartViewModel.setList(response.getProductList());
                 cartViewModel.setPriceLiveData(response.getTotalPrice());
-                isCartReady = true;
-                refreshExplore();
+                setIsCartReady(true);
+//                refreshExplore();
             }
 
             @Override
@@ -158,8 +204,8 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
             @Override
             public void onResponseSuccessful(Response response) {
                 Toast.makeText(MainActivity.this, "FavoritesResponseSuccessful", Toast.LENGTH_SHORT).show();
-                isFavoritesReady = true;
-                refreshExplore();
+                setIsFavoritesReady(true);
+//                refreshExplore();
             }
 
             @Override
@@ -198,13 +244,60 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         }
 
 //        loadFragment(new AddProductImagesFragment());
+
+        isResourcesReady.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    hideLoadingProgress();
+                }
+            }
+        });
+
+        final Badge badgeCart = addBadgeAt(1, cartViewModel.getList().size());
+
+        cartViewModel.getMutableLiveData().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                if (products.size() < 1) {
+                    badgeCart.hide(true);
+                } else {
+                    badgeCart.setBadgeNumber(products.size());
+                }
+            }
+        });
+
+        final Badge badgeFav = addBadgeAt(3, favoritesViewModel.getList().size());
+
+        favoritesViewModel.getMutableLiveData().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                if (products.size() < 1) {
+                    badgeFav.hide(true);
+                } else {
+                    badgeFav.setBadgeNumber(products.size());
+                }
+            }
+        });
+    }
+
+    private Badge addBadgeAt(int position, int number) {
+        // add badge
+        return new QBadgeView(this)
+                .setBadgeNumber(number)
+                .setGravityOffset(12, 2, true)
+                .bindTarget(bottomNavigation.getBottomNavigationItemView(position));
+    }
+
+    private void hideLoadingProgress() {
+
     }
 
     private void refreshExplore() {
-        if (isCartReady && isFavoritesReady) {
-            ProductsViewModel productsViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
-            productsViewModel.refreshList();
-        }
+//        if (isCartReady && isFavoritesReady) {
+//            ProductsViewModel productsViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
+//            productsViewModel.refreshList();
+//        }
     }
 
     @Override
@@ -216,12 +309,9 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         Fragment fragment = new ProductDetailFragment();
         fragment.setArguments(bundle);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
+        loadFragment(fragment);
 
-        hideBottomNavigation();
+//        hideBottomNavigation();
     }
 
     public void hideBottomNavigation() {
@@ -246,7 +336,17 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        findViewById(R.id.bottom_navigation).setVisibility(View.VISIBLE);
+        if (
+                getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof PaymentFragment
+                        || getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof AddProductImagesFragment
+                        || getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof CheckoutFragment
+                        || getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof ProductDetailFragment
+                        || getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof SearchFragment
+        ) {
+            hideBottomNavigation();
+        } else {
+            showBottomNavigation();
+        }
     }
 
     @Override
@@ -267,20 +367,20 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         fragment.setArguments(bundle);
 
         loadFragment(fragment);
-        hideBottomNavigation();
+//        hideBottomNavigation();
     }
 
     @Override
     public void loadExploreFragment() {
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         bottomNavigation.setSelectedItemId(R.id.bottom_nav_explore);
-        showBottomNavigation();
+//        showBottomNavigation();
     }
 
     @Override
     public void loadCheckoutFragment() {
         loadFragment(new CheckoutFragment());
-        hideBottomNavigation();
+//        hideBottomNavigation();
     }
 
     @Override
@@ -303,7 +403,12 @@ public class MainActivity extends AppCompatActivity implements IFragmentCallBack
         }
         fragment.setArguments(bundle);
         loadFragment(fragment);
-        hideBottomNavigation();
+//        hideBottomNavigation();
+    }
+
+    @Override
+    public void loadMyOrdersFragment() {
+        loadFragment(new MyOrdersFragment());
     }
 
     @Override

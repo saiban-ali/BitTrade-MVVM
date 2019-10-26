@@ -1,5 +1,16 @@
 package com.fyp.bittrade.activities;
 
+/**
+ *
+ * @startuml
+ *
+ *
+ *
+ * @enduml
+ *
+ * */
+
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -41,7 +52,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private EditText zip;
     private EditText phone;
     private Spinner spinner;
-    private TextView skipButton;
+    private Button skipButton;
     private ProgressBar progressBar;
 
     private User user;
@@ -73,8 +84,12 @@ public class AddAddressActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 nextButton.setVisibility(View.GONE);
 
+                if (!validateFields()) {
+                    return;
+                }
+
                 String tempAddress = address.getText().toString();
-                String tempCity = address.getText().toString();
+                String tempCity = city.getText().toString();
                 String tempZip = zip.getText().toString();
                 String tempPhone = phone.getText().toString();
                 String tempCountry = spinner.getSelectedItem().toString();
@@ -124,6 +139,38 @@ public class AddAddressActivity extends AppCompatActivity {
                 });
             }
         });
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoMainActivity();
+            }
+        });
+    }
+
+    private boolean validateFields() {
+
+        if (address.getText().toString().isEmpty()) {
+            address.setError("Enter Address");
+            return false;
+        }
+
+        if (city.getText().toString().isEmpty()) {
+            city.setError("Enter City");
+            return false;
+        }
+
+        if (zip.getText().toString().isEmpty()) {
+            zip.setError("Enter Zip");
+            return false;
+        }
+
+        if (phone.getText().toString().isEmpty()) {
+            phone.setError("Enter Phone Number");
+            return false;
+        }
+
+        return true;
     }
 
     private void gotoMainActivity() {

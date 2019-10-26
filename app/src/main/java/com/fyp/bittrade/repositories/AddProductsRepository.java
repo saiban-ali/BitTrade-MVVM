@@ -53,6 +53,7 @@ public class AddProductsRepository {
         partMap.put("stock", createPartFromString(Integer.toString(product.getStock())));
         partMap.put("price", createPartFromString(Double.toString(product.getPrice())));
         partMap.put("category", createPartFromString(product.getCategory()));
+        partMap.put("brand", createPartFromString(product.getBrand()));
 
         List<MultipartBody.Part> parts = new ArrayList<>();
 

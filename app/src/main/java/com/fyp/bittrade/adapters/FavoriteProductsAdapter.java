@@ -82,7 +82,7 @@ public class FavoriteProductsAdapter extends RecyclerView.Adapter<FavoriteProduc
                         "No brand" :
                         favoritesList.get(i).getBrand()
         );
-        favoritesRecyclerViewHolder.product_price.setText(String.format("$%.2f", favoritesList.get(i).getPrice()));
+        favoritesRecyclerViewHolder.product_price.setText(favoritesList.get(i).getFormattedPrice());
     }
 
     @Override

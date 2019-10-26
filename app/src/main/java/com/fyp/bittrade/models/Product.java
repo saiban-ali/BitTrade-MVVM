@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Product implements Parcelable {
 
     public static final int HAS_NO_IMAGE_URL = 0;
@@ -122,6 +126,11 @@ public class Product implements Parcelable {
 
     public void decrementProductCount() {
         productCount--;
+    }
+
+    public String getFormattedPrice() {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        return NumberFormat.getCurrencyInstance(Locale.US).format(Double.parseDouble(decimalFormat.format(price)));
     }
 
 

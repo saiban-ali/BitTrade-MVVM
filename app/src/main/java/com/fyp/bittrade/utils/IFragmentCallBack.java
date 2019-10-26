@@ -14,4 +14,6 @@ public interface IFragmentCallBack {
     void loadPaymentFragment(String url);
 
     void loadSearchFragment(String searchId);
+
+    void loadMyOrdersFragment();
 }

@@ -340,6 +340,16 @@
         android:layout_gravity="center"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Error Loading. Refresh!"
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
 <!--    <RelativeLayout-->
 <!--        android:id="@+id/layout_error"-->
 <!--        android:layout_width="match_parent"-->

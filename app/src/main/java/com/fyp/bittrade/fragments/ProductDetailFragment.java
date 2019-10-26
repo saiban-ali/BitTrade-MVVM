@@ -31,6 +31,8 @@ import com.smarteist.autoimageslider.IndicatorAnimations;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
+import java.util.Objects;
+
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -42,7 +44,7 @@ public class ProductDetailFragment extends Fragment {
     private Product product;
     private ImageView productImage;
     private TextView title;
-//    private TextView brand;
+    private TextView brand;
     private TextView price;
     private TextView description;
     private ImageView addToFavorite;
@@ -103,6 +105,8 @@ public class ProductDetailFragment extends Fragment {
             removeFromFavorite.setVisibility(View.GONE);
         }
 
+        ((MainActivity) Objects.requireNonNull(getActivity())).hideBottomNavigation();
+
         return view;
     }
 
@@ -130,6 +134,11 @@ public class ProductDetailFragment extends Fragment {
 
         title.setText(product.getTitle());
         price.setText(String.format("$%.2f", product.getPrice()));
+        brand.setText(
+                (product.getBrand() == null || product.getBrand().equals("")) ?
+                        "No Brand" :
+                        product.getBrand()
+        );
         description.setText(product.getDescription());
 
     }
@@ -301,7 +310,7 @@ public class ProductDetailFragment extends Fragment {
 
 //        productImage = view.findViewById(R.id.img_product);
         title = view.findViewById(R.id.txt_product_title);
-//        brand = view.findViewById(R.id.txt_brand_name);
+        brand = view.findViewById(R.id.txt_product_brand);
         price = view.findViewById(R.id.txt_product_price);
         description = view.findViewById(R.id.txt_product_description);
         addToFavorite = view.findViewById(R.id.img_favorite);

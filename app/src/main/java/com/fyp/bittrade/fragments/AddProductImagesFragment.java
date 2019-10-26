@@ -155,6 +155,8 @@ public class AddProductImagesFragment extends Fragment implements IAddProductCal
             }
         });
 
+        ((MainActivity) getActivity()).hideBottomNavigation();
+
         return view;
     }
 

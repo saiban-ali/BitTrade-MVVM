@@ -34,6 +34,8 @@ import com.fyp.bittrade.activities.MainActivity;
 import com.fyp.bittrade.adapters.ExploreProductsAdapter;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.repositories.CartRepository;
+import com.fyp.bittrade.utils.ExploreProgressHandler;
+import com.fyp.bittrade.utils.IExploreeProgressCallBack;
 import com.fyp.bittrade.utils.IFragmentCallBack;
 import com.fyp.bittrade.utils.IResponseCallBack;
 import com.fyp.bittrade.viewmodels.CartViewModel;
@@ -46,7 +48,7 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-public class ExploreFragment extends Fragment {
+public class ExploreFragment extends Fragment implements IExploreeProgressCallBack {
 
     private static final String TAG = ExploreFragment.class.getName();
 
@@ -56,7 +58,7 @@ public class ExploreFragment extends Fragment {
     private RecyclerView recyclerView;
     private ExploreProductsAdapter exploreProductsAdapter;
     private GridLayoutManager gridLayoutManager;
-    private RelativeLayout errorLayout;
+//    private RelativeLayout errorLayout;
     private TextView categorySeeAll;
 
 //    private ProductsDataSource productsRepository;
@@ -72,6 +74,7 @@ public class ExploreFragment extends Fragment {
     private LinearLayout categoryGadgets;
     private LinearLayout categoryGaming;
     private ProgressBar progressBar;
+    private TextView errorText;
 
 //    private boolean hasNextPage = false;
 //    private boolean isLastPage = false;
@@ -90,6 +93,8 @@ public class ExploreFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement IFragmentCallBack");
         }
+
+        ExploreProgressHandler.callBack = this;
     }
 
     @Override
@@ -107,7 +112,8 @@ public class ExploreFragment extends Fragment {
         init(view);
         setUpToolBar(view);
 
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
+//        errorText.setVisibility(View.GONE);
 
         setUpListeners();
 
@@ -180,7 +186,7 @@ public class ExploreFragment extends Fragment {
         productsViewModel.getPagedListLiveData().observe(getViewLifecycleOwner(), new Observer<PagedList<Product>>() {
             @Override
             public void onChanged(PagedList<Product> products) {
-                progressBar.setVisibility(View.GONE);
+//                progressBar.setVisibility(View.GONE);
                 exploreProductsAdapter.submitList(products);
             }
         });
@@ -453,6 +459,7 @@ public class ExploreFragment extends Fragment {
         categoryGaming = container.findViewById(R.id.layout_cat_gaming);
 
         progressBar = container.findViewById(R.id.progress);
+        errorText = container.findViewById(R.id.error_text);
 
 //        productsRepository = ProductsDataSource.getInstance();
 //        errorLayout = container.findViewById(R.id.layout_error);
@@ -482,6 +489,50 @@ public class ExploreFragment extends Fragment {
             default:
                 return false;
         }
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    @Override
+    public void showErrorMessage() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                errorText.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    @Override
+    public void showProgressBar() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    @Override
+    public void hideErrorMessage() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                errorText.setVisibility(View.GONE);
+            }
+        });
 
     }
 }

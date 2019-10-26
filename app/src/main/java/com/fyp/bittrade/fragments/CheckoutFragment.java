@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +30,11 @@ import com.fyp.bittrade.models.CheckoutResponse;
 import com.fyp.bittrade.models.Product;
 import com.fyp.bittrade.models.User;
 import com.fyp.bittrade.utils.IFragmentCallBack;
+import com.fyp.bittrade.utils.VerifyPermissions;
 import com.fyp.bittrade.viewmodels.CartViewModel;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +50,7 @@ public class CheckoutFragment extends Fragment {
     private TextView country;
     private TextView phone;
     private Button editAddress;
+    private ProgressBar progressBar;
 
     private IFragmentCallBack fragmentCallBack;
     private Button proceedPaymentButton;
@@ -75,12 +79,15 @@ public class CheckoutFragment extends Fragment {
         setUpToolbar(view);
 
         init(view);
+        progressBar.setVisibility(View.GONE);
 
         setUpCartList(view);
 
         setUpDeliveryDetails();
 
         setUpClickListeners();
+
+        ((MainActivity) Objects.requireNonNull(getActivity())).hideBottomNavigation();
 
         return view;
     }
@@ -89,30 +96,41 @@ public class CheckoutFragment extends Fragment {
         proceedPaymentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                proceedPaymentButton.setVisibility(View.GONE);
                 getPaymentUrl();
             }
         });
     }
 
     private void getPaymentUrl() {
-        Client.getInstance()
+        VerifyPermissions.verifyInternetPermission(getActivity());
+
+        Service api = Client.getInstance()
                 .getClient()
-                .create(Service.class)
-                .checkout(user.getId())
+                .create(Service.class);
+
+        api.checkout(user.getId())
                 .enqueue(new Callback<CheckoutResponse>() {
                     @Override
                     public void onResponse(Call<CheckoutResponse> call, Response<CheckoutResponse> response) {
                         if (response.isSuccessful()) {
                             Toast.makeText(getActivity(), "Response Successful", Toast.LENGTH_SHORT).show();
+                            proceedPaymentButton.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                             fragmentCallBack.loadPaymentFragment(response.body().getUrl());
                         } else {
                             Toast.makeText(getActivity(), "Response Not Successful", Toast.LENGTH_SHORT).show();
+                            proceedPaymentButton.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<CheckoutResponse> call, Throwable t) {
                         Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_SHORT).show();
+                        proceedPaymentButton.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
     }
@@ -134,6 +152,7 @@ public class CheckoutFragment extends Fragment {
         phone = view.findViewById(R.id.phone_number);
         editAddress = view.findViewById(R.id.btn_edit_address);
         proceedPaymentButton = view.findViewById(R.id.btn_proceed_to_payment);
+        progressBar = view.findViewById(R.id.progress);
     }
 
     private void setUpCartList(View view) {

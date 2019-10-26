@@ -32,9 +32,9 @@ import retrofit2.http.Query;
 public interface Service {
 
 //    String BASE_URL = "https://bittradeapi.azurewebsites.net/api/";
-//    String BASE_URL = "http://192.168.10.11:3000/api/";
+    String BASE_URL = "http://192.168.10.17:3000/api/";
 //    String BASE_URL = "https://crucial-strata-250709.appspot.com/api/";
-    String BASE_URL = "https://bittrade-252909.appspot.com/api/";
+//    String BASE_URL = "https://bittrade-252909.appspot.com/api/";
 
 
 //    @GET("products")

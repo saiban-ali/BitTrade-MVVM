@@ -93,7 +93,7 @@ public class UploadImageActivity extends AppCompatActivity {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoMainActivity();
+                gotoAddAddressActivity();
             }
         });
 

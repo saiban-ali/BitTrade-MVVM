@@ -44,6 +44,7 @@ import com.fyp.bittrade.utils.VerifyPermissions;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -65,7 +66,7 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
     private TextView cityZip;
     private TextView country;
     private ImageView editUsername;
-    private Button changePassword;
+    private Button myOrdersButton;
     private Button logout;
     private Button changeProfilePicture;
     private Button editAddress;
@@ -106,9 +107,11 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
 
         user = ((MainActivity) getActivity()).getUser();
 
-        address.setText(user.getContact().getAddress());
-        cityZip.setText(String.format("%s, %s", user.getContact().getCity(), user.getContact().getZip()));
-        country.setText(user.getContact().getCountry());
+       if (user != null && user.getContact() != null) {
+           address.setText(user.getContact().getAddress());
+           cityZip.setText(String.format("%s, %s", user.getContact().getCity(), user.getContact().getZip()));
+           country.setText(user.getContact().getCountry());
+       }
 
         if (user != null && user.getProfileImageUrl() != null && !user.getProfileImageUrl().equals("")) {
             Glide.with(getActivity())
@@ -116,7 +119,9 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
                     .into(imageView);
         }
 
-        String name = user.getFirstName() + " " + user.getLastName();
+        String name = (user != null ? user.getFirstName() : "")
+                + " "
+                + (user != null ? user.getLastName() : "");
 
         username.setText(name);
         email.setText(user.getEmail());
@@ -175,6 +180,13 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
                 startActivityForResult(intent, Constents.UPLOAD_IMAGE_REQUEST_CODE);
             }
         });
+
+        myOrdersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) Objects.requireNonNull(getActivity())).loadMyOrdersFragment();
+            }
+        });
     }
 
     private void init(View view) {
@@ -190,6 +202,7 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
         changeProfilePicture = view.findViewById(R.id.btn_change_dp);
         imageView = view.findViewById(R.id.profile_image);
         editAddress = view.findViewById(R.id.btn_edit_address);
+        myOrdersButton = view.findViewById(R.id.btn_orders);
     }
 
     @Override
@@ -203,13 +216,10 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
     @Override
     public void changeUsername(String username) {
         this.username.setText(username);
-
-        // TODO: make server call to update username
     }
 
     @Override
     public void changePassword(String newPassword) {
-        // TODO: 9/14/2019 make server call to change password
     }
 
     @Override

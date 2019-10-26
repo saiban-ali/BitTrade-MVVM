@@ -124,6 +124,7 @@ public class SearchFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     progressBar.setVisibility(View.VISIBLE);
+                    productsAdapter.submitList(new ArrayList<Product>());
                     performSearch(searchBox.getText().toString(), false);
                 }
 
@@ -296,6 +297,8 @@ public class SearchFragment extends Fragment {
                         });
             }
         });
+
+        ((MainActivity) getActivity()).hideBottomNavigation();
 
         return view;
     }
