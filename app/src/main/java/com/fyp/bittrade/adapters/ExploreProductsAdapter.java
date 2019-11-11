@@ -109,8 +109,17 @@ public class ExploreProductsAdapter extends PagedListAdapter<Product, ExplorePro
         } else {
 //            holder.noImageText.setVisibility(View.GONE);
             RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL);
+
+            for (String url :
+                    imageUrls) {
+                Glide.with(context)
+                        .load(url)
+                        .apply(requestOptions)
+                        .preload(200, 200);
+            }
+
             Glide.with(context)
-                    .load(getItem(position).getImages()[0])
+                    .load(imageUrls[0])
                     .error(R.drawable.ic_broken_image_black_24dp)
                     .fitCenter()
                     .apply(requestOptions)

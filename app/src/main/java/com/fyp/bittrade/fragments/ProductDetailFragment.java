@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -188,19 +189,21 @@ public class ProductDetailFragment extends Fragment {
                 new CartRepository.IResponseAddCartCallBack() {
                     @Override
                     public void onResponseSuccessful(ResponseBody response) {
-
+                        Toast.makeText(getActivity(), "Removed from cart", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponseUnsuccessful(ResponseBody responseBody) {
                         addToCart.setVisibility(View.GONE);
                         removeFromCart.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), "Response Unsuccessful", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onCallFailed(String message) {
                         addToCart.setVisibility(View.GONE);
                         removeFromCart.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -214,19 +217,21 @@ public class ProductDetailFragment extends Fragment {
                 new CartRepository.IResponseAddCartCallBack() {
                     @Override
                     public void onResponseSuccessful(ResponseBody response) {
-
+                        Toast.makeText(getActivity(), "Added to cart", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponseUnsuccessful(ResponseBody responseBody) {
                         addToCart.setVisibility(View.VISIBLE);
                         removeFromCart.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Response Unsuccessful", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onCallFailed(String message) {
                         addToCart.setVisibility(View.VISIBLE);
                         removeFromCart.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -240,19 +245,21 @@ public class ProductDetailFragment extends Fragment {
                 new IResponseCallBack() {
                     @Override
                     public void onResponseSuccessful(Response response) {
-
+                        Toast.makeText(getActivity(), "Removed From favorites", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponseUnsuccessful(Response responseBody) {
                         addToFavorite.setVisibility(View.GONE);
                         removeFromFavorite.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), "Response Unsuccessful", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onCallFailed(String message) {
                         addToFavorite.setVisibility(View.GONE);
                         removeFromFavorite.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -266,19 +273,21 @@ public class ProductDetailFragment extends Fragment {
                 new IResponseCallBack() {
                     @Override
                     public void onResponseSuccessful(Response response) {
-
+                        Toast.makeText(getActivity(), "Added to favorites", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponseUnsuccessful(Response responseBody) {
                         addToFavorite.setVisibility(View.VISIBLE);
                         removeFromFavorite.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Response Unsuccessful", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onCallFailed(String message) {
                         addToFavorite.setVisibility(View.VISIBLE);
                         removeFromFavorite.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Call Failed", Toast.LENGTH_SHORT).show();
                     }
                 }
         );

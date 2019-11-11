@@ -51,6 +51,8 @@ public class CheckoutFragment extends Fragment {
     private Button editAddress;
     private ProgressBar progressBar;
 
+    private double totalPrice;
+
     private IFragmentCallBack fragmentCallBack;
     private Button proceedPaymentButton;
 
@@ -109,7 +111,7 @@ public class CheckoutFragment extends Fragment {
                 .getClient()
                 .create(Service.class);
 
-        api.checkout(user.getId())
+        api.checkout(user.getId(), totalPrice)
                 .enqueue(new Callback<CheckoutResponse>() {
                     @Override
                     public void onResponse(Call<CheckoutResponse> call, Response<CheckoutResponse> response) {
@@ -185,6 +187,7 @@ public class CheckoutFragment extends Fragment {
 
     private void setUpCartList(View view) {
         CartViewModel cartViewModel = ViewModelProviders.of(getActivity()).get(CartViewModel.class);
+        totalPrice = cartViewModel.getPrice();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview_checkout);
         CartProductsAdapter cartProductsAdapter = new CartProductsAdapter(getActivity(), true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);

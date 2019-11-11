@@ -81,6 +81,8 @@ public class CartViewModel extends ViewModel {
 
     public void remove(final Product p, String userId, final CartRepository.IResponseAddCartCallBack responseCart) {
         list.remove(p);
+        final int productCount = p.getProductCount();
+        p.setProductCount(0);
         double prePrice = priceLiveData.getValue();
         double newPrice = prePrice - p.getPrice();
         priceLiveData.setValue(newPrice);
@@ -96,6 +98,7 @@ public class CartViewModel extends ViewModel {
             public void onResponseUnsuccessful(ResponseBody responseBody) {
                 responseCart.onResponseUnsuccessful(responseBody);
                 list.add(p);
+                p.setProductCount(productCount);
                 double prePrice = priceLiveData.getValue();
                 double newPrice = prePrice + p.getPrice();
                 priceLiveData.setValue(newPrice);
@@ -106,6 +109,7 @@ public class CartViewModel extends ViewModel {
             public void onCallFailed(String message) {
                 responseCart.onCallFailed(message);
                 list.add(p);
+                p.setProductCount(productCount);
                 double prePrice = priceLiveData.getValue();
                 double newPrice = prePrice + p.getPrice();
                 priceLiveData.setValue(newPrice);
@@ -114,12 +118,63 @@ public class CartViewModel extends ViewModel {
         });
     }
 
-    public void incrementProductCount(String userId, String productId, int newQty, CartRepository.IResponseAddCartCallBack cartCallBack) {
-        cartRepository.incrementProductCount(productId, userId, newQty, cartCallBack);
+    public void incrementProductCount(String userId, final Product product, final CartRepository.IResponseAddCartCallBack cartCallBack) {
+        double prePrice = priceLiveData.getValue();
+        double newPrice = prePrice + product.getPrice();
+        priceLiveData.setValue(newPrice);
+        cartRepository.incrementProductCount(product.getId(), userId, product.getProductCount(), new CartRepository.IResponseAddCartCallBack() {
+            @Override
+            public void onResponseSuccessful(ResponseBody response) {
+                cartCallBack.onResponseSuccessful(response);
+            }
+
+            @Override
+            public void onResponseUnsuccessful(ResponseBody responseBody) {
+                double prePrice = priceLiveData.getValue();
+                double newPrice = prePrice - product.getPrice();
+                priceLiveData.setValue(newPrice);
+                cartCallBack.onResponseUnsuccessful(responseBody);
+            }
+
+            @Override
+            public void onCallFailed(String message) {
+                double prePrice = priceLiveData.getValue();
+                double newPrice = prePrice - product.getPrice();
+                priceLiveData.setValue(newPrice);
+                cartCallBack.onCallFailed(message);
+            }
+        });
     }
 
-    public void decrementProductCount(String userId, String productId, int newQty, CartRepository.IResponseAddCartCallBack cartCallBack) {
-        cartRepository.decrementProductCount(productId, userId, newQty, cartCallBack);
+    public void decrementProductCount(String userId, final Product product, final CartRepository.IResponseAddCartCallBack cartCallBack) {
+        double prePrice = priceLiveData.getValue();
+        double newPrice = prePrice - product.getPrice();
+        priceLiveData.setValue(newPrice);
+
+        cartRepository.decrementProductCount(product.getId(), userId, product.getProductCount(), new CartRepository.IResponseAddCartCallBack() {
+            @Override
+            public void onResponseSuccessful(ResponseBody response) {
+                cartCallBack.onResponseSuccessful(response);
+            }
+
+            @Override
+            public void onResponseUnsuccessful(ResponseBody responseBody) {
+                double prePrice = priceLiveData.getValue();
+                double newPrice = prePrice + product.getPrice();
+                priceLiveData.setValue(newPrice);
+
+                cartCallBack.onResponseUnsuccessful(responseBody);
+            }
+
+            @Override
+            public void onCallFailed(String message) {
+                double prePrice = priceLiveData.getValue();
+                double newPrice = prePrice + product.getPrice();
+                priceLiveData.setValue(newPrice);
+
+                cartCallBack.onCallFailed(message);
+            }
+        });
     }
 
     public boolean hasProduct(Product p) {

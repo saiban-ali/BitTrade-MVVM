@@ -175,8 +175,7 @@ public class CartFragment extends Fragment {
                     cartViewModel.setList(list);
                     cartViewModel.incrementProductCount(
                             ((MainActivity) getActivity()).getUser().getId(),
-                            p.getId(),
-                            p.getProductCount(),
+                            p,
                             new CartRepository.IResponseAddCartCallBack() {
                                 @Override
                                 public void onResponseSuccessful(ResponseBody response) {
@@ -213,8 +212,7 @@ public class CartFragment extends Fragment {
 
                     cartViewModel.decrementProductCount(
                             ((MainActivity) getActivity()).getUser().getId(),
-                            p.getId(),
-                            p.getProductCount(),
+                            p,
                             new CartRepository.IResponseAddCartCallBack() {
                                 @Override
                                 public void onResponseSuccessful(ResponseBody response) {

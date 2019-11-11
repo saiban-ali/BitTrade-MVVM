@@ -31,10 +31,8 @@ import retrofit2.http.Query;
 
 public interface Service {
 
-//    String BASE_URL = "https://bittradeapi.azurewebsites.net/api/";
-    String BASE_URL = "http://192.168.10.17:3000/api/";
-//    String BASE_URL = "https://crucial-strata-250709.appspot.com/api/";
-//    String BASE_URL = "https://bittrade-252909.appspot.com/api/";
+//    String BASE_URL = "http://192.168.10.17:3000/api/";
+    String BASE_URL = "https://bittrade-252909.appspot.com/api/";
 
 
 //    @GET("products")
@@ -80,7 +78,7 @@ public interface Service {
     );
 
     @GET("checkout/{userId}")
-    Call<CheckoutResponse> checkout(@Path("userId") String userId);
+    Call<CheckoutResponse> checkout(@Path("userId") String userId, @Query("price") double totalPrice);
 
     @GET("products/favorite/{userId}")
     Call<ProductsResponse> getFavorites(@Path("userId") String userId);
