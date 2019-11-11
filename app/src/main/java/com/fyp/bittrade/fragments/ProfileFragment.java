@@ -65,6 +65,7 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
     private TextView address;
     private TextView cityZip;
     private TextView country;
+    private TextView phone;
     private ImageView editUsername;
     private Button myOrdersButton;
     private Button myProductsButton;
@@ -127,6 +128,13 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
 
         username.setText(name);
         email.setText(user.getEmail());
+        if (user.getPhoneNumber() != null && !user.getPhoneNumber().equals("")) {
+            phone.setText(user.getPhoneNumber());
+        } else if (user.getContact().getPhone() != null && !user.getContact().getPhone().equals("")) {
+            phone.setText(user.getContact().getPhone());
+        } else {
+            phone.setText("Not Added");
+        }
 
         setOnClickListeners();
 
@@ -221,6 +229,7 @@ public class ProfileFragment extends Fragment implements IDialogCallBack {
         myOrdersButton = view.findViewById(R.id.btn_orders);
         myProductsButton = view.findViewById(R.id.btn_my_products);
         withdraw = view.findViewById(R.id.btn_withdraw);
+        phone = view.findViewById(R.id.phone_number);
     }
 
     @Override
