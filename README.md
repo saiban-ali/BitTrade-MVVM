@@ -1,16 +1,16 @@
 # BitTrade-MVVM
 E-commerce App
 <br/>
-![](https://github.com/saiban-ali/BitTrade-MVVM/blob/master/ui-screenshots/Screenshot_2019-10-29-07-56-30.jpg)
+![Home](https://github.com/saiban-ali/BitTrade-MVVM/blob/master/ui-screenshots/Screenshot_2019-09-25-16-08-08%20(2).jpg)
 
-### Home Screen
+### Profile
 
-![Home Screen](https://github.com/saiban-ali/BitTrade-MVVM/blob/master/ui-screenshots/Screenshot_2019-10-29-07-56-38.jpg)
+![Profile](https://github.com/saiban-ali/BitTrade-MVVM/blob/master/ui-screenshots/Screenshot_2019-09-25-14-54-20.jpg)
 
-### Send Coins
+### Payment
 
-![Send Coins](https://github.com/saiban-ali/BitTrade-MVVM/blob/master/ui-screenshots/Screenshot_2019-10-29-07-56-48.jpg)
+![Payment](https://github.com/saiban-ali/BitTrade-MVVM/blob/master/ui-screenshots/Screenshot_2019-09-25-14-53-13.jpg)
 
-### Receive Coins
+### Cart
 
-![Receive Coins](https://github.com/saiban-ali/BitTrade-MVVM/blob/master/ui-screenshots/Screenshot_2019-10-29-07-56-56.jpg)
+![Cart](https://github.com/saiban-ali/BitTrade-MVVM/blob/master/ui-screenshots/Screenshot_2019-09-25-14-52-47.jpg)
